@@ -1,2 +1,2 @@
-public class Monster implements Card {
+public class Monster extends Card {
 }

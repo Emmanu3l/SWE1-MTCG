@@ -1,2 +1,2 @@
-public class Spell implements Card {
+public class Spell extends Card {
 }
