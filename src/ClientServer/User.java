@@ -1,3 +1,5 @@
+package ClientServer;
+
 import Card.Card;
 
 public class User {
