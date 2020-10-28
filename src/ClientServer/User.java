@@ -1,14 +1,23 @@
 package ClientServer;
 
-import Card.Card;
+import Cards.Card;
+
+import java.util.LinkedList;
 
 public class User {
     private String username;
     private String password;
+    private LinkedList<Card> deck;
+    private LinkedList<Card> stack;
     private int coins = 20;
-    private Card[] stack;
-    private Card[] deck;
     private int elo = 100;
+
+    public User(String username, String password, LinkedList<Card> deck, LinkedList<Card> stack) {
+        this.username = username;
+        this.password = password;
+        this.deck = deck;
+        this.stack = stack;
+    }
 
     public void acquirePackages() {
         if (coins >= 4) {
@@ -29,12 +38,21 @@ public class User {
 
     }
 
-    public void battle() {
-
-    }
-
     public void manageCards() {
 
     }
+    //deck is used in battles against other players
+    public void deckAddCard() {
+
+    }
+    public void deckRemoveCard() {
+
+    }
+
+    //stack is collection of all current cards
+    public void stackTrade() {
+
+    }
+
 
 }
