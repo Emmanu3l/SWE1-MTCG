@@ -1,6 +1,4 @@
-package ClientServer;
-
-import Cards.Card;
+import cards.Card;
 
 import java.util.LinkedList;
 

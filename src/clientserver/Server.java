@@ -1,7 +1,7 @@
-package ClientServer;
+package clientserver;
+
 import java.io.*;
 import java.net.*;
-import java.sql.SQLOutput;
 
 public class Server {
     //register and Login
@@ -9,11 +9,11 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(8000);
             Socket socket = serverSocket.accept();
-            System.out.println("Client connected successfully.");
+            System.out.println("ClientServer.Client connected successfully.");
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String string = bufferedReader.readLine();
-            System.out.println("Client: " + string);
+            System.out.println("ClientServer.Client: " + string);
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
             printWriter.println("Hi, I'm a server.");
             printWriter.flush();

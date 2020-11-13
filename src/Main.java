@@ -1,6 +1,5 @@
-import Cards.Card;
-import Cards.Monster;
-import ClientServer.User;
+import cards.Card;
+import cards.Monster;
 
 import java.util.LinkedList;
 

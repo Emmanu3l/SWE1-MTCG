@@ -1,9 +1,9 @@
 @echo off
 REM --------------------------------------------------
-REM Monster Trading Cards Game
+REM Monster Trading cards Game
 REM --------------------------------------------------
-title Monster Trading Cards Game
-echo CURL Testing for Monster Trading Cards Game
+title Monster Trading cards Game
+echo CURL Testing for Monster Trading cards Game
 echo.
 
 echo 1) Create Users

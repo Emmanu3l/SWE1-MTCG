@@ -1,4 +1,5 @@
-package ClientServer;
+package clientserver;
+
 import java.io.*;
 import java.net.*;
 
@@ -12,7 +13,7 @@ public class Client {
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String string = bufferedReader.readLine();
-            System.out.println("Server: " + string);
+            System.out.println("ClientServer.Server: " + string);
         } catch (IOException e) {
             e.printStackTrace();
         }

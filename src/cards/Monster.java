@@ -1,6 +1,6 @@
-package Cards;
+package cards;
 
-import Interfaces.Attackable;
+import interfaces.Attackable;
 
 public class Monster extends Card implements Attackable {
     public Monster(String name, int dmg, String elementType) {
