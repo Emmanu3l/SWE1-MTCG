@@ -22,12 +22,12 @@ public class Server {
         try {
             Socket socket = listener.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String request = in.readLine();
-            RequestContext response = parseRequest(request);
-            while ((request = in.readLine()) != null) {
+            //String request = in.readLine();
+            RequestContext response = parseRequest(in);
+            /*while ((request = in.readLine()) != null) {
                 System.out.println(request);
             }
-            System.out.println(response);
+            System.out.println(response);*/
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,7 +36,13 @@ public class Server {
     }
 
     //parse the http request's header containing the following information
-    public static RequestContext parseRequest(String request) {
+    public static RequestContext parseRequest(BufferedReader in) {
+        String request = null;
+        try {
+            request = in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String[] parsedRequest = request.trim().split(" ");
         //parse header
         //request line: verb, URI, Version
@@ -52,12 +58,22 @@ public class Server {
         //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
         //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
 
-        Map<String, String> headers = new HashMap<>();
-        while(!request.isEmpty()) {
-            String[] headerData = request.split(": ", 2);
-            headers.put(headerData[0], headerData[1]);
-            System.out.println(headers);
+        try {
+            request = in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Map<String, String> headers = new HashMap<>();
+        try {
+            while ((request = in.readLine()) != null) {
+                String[] headerData = request.split(": ", 2);
+                headers.put(headerData[0], headerData[1]);
+                System.out.println(headers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //blank line
 
         //parse body
