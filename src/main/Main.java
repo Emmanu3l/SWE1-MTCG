@@ -1,5 +1,7 @@
-import cards.Card;
-import cards.Monster;
+package main;
+
+import main.cards.Card;
+import main.cards.Monster;
 
 import java.util.LinkedList;
 

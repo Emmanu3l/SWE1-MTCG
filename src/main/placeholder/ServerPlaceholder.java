@@ -1,4 +1,4 @@
-package placeholder;
+package main.placeholder;
 
 import java.io.*;
 import java.net.*;

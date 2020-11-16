@@ -1,10 +1,12 @@
-package webservicehandler;
+package main.webservicehandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
 
@@ -47,8 +49,15 @@ public class Server {
         String version = parsedRequest[2];
         System.out.println(version);
         //new line
-        String headers = "";
+        //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
+        //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
 
+        Map<String, String> headers = new HashMap<>();
+        while(!request.isEmpty()) {
+            String[] headerData = request.split(": ", 2);
+            headers.put(headerData[0], headerData[1]);
+            System.out.println(headers);
+        }
         //blank line
 
         //parse body

@@ -1,4 +1,6 @@
-import cards.Card;
+package main;
+
+import main.cards.Card;
 
 import java.util.LinkedList;
 
@@ -47,7 +49,7 @@ public class User {
 
     }
 
-    //stack is collection of all current cards
+    //stack is collection of all current main.cards
     public void stackTrade() {
 
     }

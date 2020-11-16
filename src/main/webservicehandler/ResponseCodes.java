@@ -1,4 +1,4 @@
-package webservicehandler;
+package main.webservicehandler;
 
 public enum ResponseCodes {
     OK,
