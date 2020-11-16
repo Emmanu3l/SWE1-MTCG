@@ -1,4 +1,4 @@
-package main.webservicehandler;
+package main.java.webservicehandler;
 
 import java.io.*;
 import java.net.Socket;

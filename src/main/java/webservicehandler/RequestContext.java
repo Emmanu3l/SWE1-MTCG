@@ -1,4 +1,4 @@
-package main.webservicehandler;
+package main.java.webservicehandler;
 
 
 import java.util.HashMap;
