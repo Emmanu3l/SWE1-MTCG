@@ -1,15 +1,36 @@
-package restwebservices;
+package webservicehandler;
 
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class WebserviceHandler {
+public class Server {
+
+    private static ServerSocket listener;
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String request = scanner.nextLine();
-        System.out.println(request);
-        RequestContext response = parseRequest(request);
-        System.out.println(response);
+        try {
+            listener = new ServerSocket(8000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            Socket socket = listener.accept();
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String request = in.readLine();
+            RequestContext response = parseRequest(request);
+            while ((request = in.readLine()) != null) {
+                System.out.println(request);
+            }
+            System.out.println(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //parse the http request's header containing the following information

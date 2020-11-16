@@ -1,4 +1,4 @@
-package restwebservices;
+package webservicehandler;
 
 public class EventHandler {
 }

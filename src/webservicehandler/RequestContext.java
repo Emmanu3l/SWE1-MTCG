@@ -1,7 +1,5 @@
-package restwebservices;
+package webservicehandler;
 
-
-import java.util.LinkedList;
 
 public class RequestContext {
     //GET, POST, PUT, DELETE

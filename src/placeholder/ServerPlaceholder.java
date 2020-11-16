@@ -1,9 +1,9 @@
-package clientserver;
+package placeholder;
 
 import java.io.*;
 import java.net.*;
 
-public class Server {
+public class ServerPlaceholder {
     //register and Login
     public static void main(String[] args) {
         try {
