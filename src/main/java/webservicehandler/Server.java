@@ -44,11 +44,11 @@ public class Server {
         //optional request headers (name:value, ...)
         //check for blank line, then call parseBody
         String verb = parsedRequest[0];
-        System.out.println(verb);
+        System.out.println("verb: " + verb);
         String URI = parsedRequest[1];
-        System.out.println(URI);
+        System.out.println("URI: " + URI);
         String version = parsedRequest[2];
-        System.out.println(version);
+        System.out.println("version: " + version);
         //new line
         //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
         //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
@@ -61,20 +61,38 @@ public class Server {
         Map<String, String> headers = new HashMap<>();
         try {
             while ((request = in.readLine()) != null) {
-                String[] headerData = request.split(": ", 2);
-                headers.put(headerData[0], headerData[1]);
-                System.out.println(headers);
+                if (!request.equals("\r\n")) {
+                    String[] headerData = request.split(": ", 2);
+                    headers.put(headerData[0], headerData[1]);
+                    System.out.println("headers: " + headers);
+                } else {
+                    break;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //blank line
+        //detect blank line to make sure the body exists
+        //parse body (aka payload)
+        //the body is optional and contains additional information for the server
+        String body = "";
+        int bodyLength = Integer.parseInt(headers.get("Content-Length"));
+        try {
+            if (!in.readLine().isBlank()) {
+                while (!in.readLine().isEmpty())
+                body += in.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //parse body
-        //optional body with additional information for the server
 
-        return new RequestContext(verb, URI, version, headers);
+        return new RequestContext(verb, URI, version, headers, body);
+    }
+
+    public static void sendResponse(RequestContext requestContext) {
+
     }
 
 }

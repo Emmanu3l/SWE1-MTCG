@@ -14,6 +14,10 @@ public class Client {
             out.write("Accept-Language: en-us\r\n");
             out.write("Accept-Encoding: gzip, deflate\r\n");
             out.write("Connection: Keep-Alive\r\n");
+            out.write("\r\n");
+            out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
+            out.write("<string xmlns=\"http://clearforest.com/\">string</string>\r\n");
+
             out.flush();
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String request;

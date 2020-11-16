@@ -10,12 +10,14 @@ public class RequestContext {
     private String URI;
     private String version;
     private Map<String, String> headers;
+    private String body;
 
-    public RequestContext(String verb, String URI, String version, Map<String, String> headers) {
+    public RequestContext(String verb, String URI, String version, Map<String, String> headers, String body) {
         this.verb = verb;
         this.URI = URI;
         this.version = version;
         this.headers = new HashMap<>();
+        this.body = body;
     }
 
 }
