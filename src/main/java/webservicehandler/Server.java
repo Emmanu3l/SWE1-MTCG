@@ -11,33 +11,19 @@ import java.util.Map;
 public class Server {
 
     private static ServerSocket listener;
-    public static void main(String[] args) {
-        try {
-            listener = new ServerSocket(8000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws IOException {
+        listener = new ServerSocket(8000);
 
-
-        try {
-            Socket socket = listener.accept();
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            RequestContext response = parseRequest(in);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Socket socket = listener.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        RequestContext response = parseRequest(in);
 
     }
 
     //parse the http request's header containing the following information
-    public static RequestContext parseRequest(BufferedReader in) {
+    public static RequestContext parseRequest(BufferedReader in) throws IOException {
         String request = null;
-        try {
-            request = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        request = in.readLine();
         String[] parsedRequest = request.trim().split(" ");
         //parse header
         //request line: verb, URI, Version
@@ -53,40 +39,35 @@ public class Server {
         //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
         //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
 
-        try {
-            request = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Map<String, String> headers = new HashMap<>();
-        try {
-            while ((request = in.readLine()) != null) {
-                if (!request.equals("\r\n")) {
-                    String[] headerData = request.split(": ", 2);
-                    headers.put(headerData[0], headerData[1]);
-                    System.out.println("headers: " + headers);
-                } else {
-                    break;
-                }
+        while ((request = in.readLine()) != null) {
+            if (request.isEmpty()) {
+                break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            String[] headerData = request.split(": ", 2);
+            headers.put(headerData[0], headerData[1]);
+            System.out.println("headers: " + headers);
         }
 
         //detect blank line to make sure the body exists
         //parse body (aka payload)
         //the body is optional and contains additional information for the server
-        String body = "";
-        int bodyLength = Integer.parseInt(headers.get("Content-Length"));
-        try {
+        //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
+
+        StringBuilder bodyBuilder = new StringBuilder();
+        while ((request = in.readLine()) != null) {
+            bodyBuilder.append(request);
+        }
+        String body = bodyBuilder.toString();
+        System.out.println(body);
+        /* {
             if (!in.readLine().isBlank()) {
                 while (!in.readLine().isEmpty())
-                body += in.readLine();
+                bodyBuilder.append(in.readLine());
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
+        }*/
 
         return new RequestContext(verb, URI, version, headers, body);
     }
