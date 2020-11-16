@@ -1,4 +1,4 @@
-package test.java;
+package test.java.webservicehandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 

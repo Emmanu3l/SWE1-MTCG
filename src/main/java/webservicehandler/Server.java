@@ -22,12 +22,7 @@ public class Server {
         try {
             Socket socket = listener.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //String request = in.readLine();
             RequestContext response = parseRequest(in);
-            /*while ((request = in.readLine()) != null) {
-                System.out.println(request);
-            }
-            System.out.println(response);*/
 
         } catch (IOException e) {
             e.printStackTrace();
