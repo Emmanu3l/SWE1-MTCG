@@ -10,10 +10,8 @@ import java.util.Map;
 
 public class Server {
 
-    private static ServerSocket listener;
     public static void main(String[] args) throws IOException {
-        listener = new ServerSocket(8000);
-
+        ServerSocket listener = new ServerSocket(8000);
         Socket socket = listener.accept();
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         RequestContext response = parseRequest(in);
@@ -44,6 +42,7 @@ public class Server {
         while (in.ready()) {
             try {
                 request = in.readLine();
+                if (request == null) break;
                 String[] headerData = request.split(": ", 2);
                 headers.put(headerData[0], headerData[1]);
                 System.out.println("headers: " + headers);
@@ -67,7 +66,7 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        
+
         return new RequestContext(verb, URI, version, headers, body);
     }
 
