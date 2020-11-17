@@ -40,13 +40,14 @@ public class Server {
         //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
 
         Map<String, String> headers = new HashMap<>();
+        StringBuilder bodyBuilder = new StringBuilder();
         while ((request = in.readLine()) != null) {
-            if (!request.equals("\n\n")) {
+            try {
                 String[] headerData = request.split(": ", 2);
                 headers.put(headerData[0], headerData[1]);
                 System.out.println("headers: " + headers);
-            } else {
-                break;
+            } catch (ArrayIndexOutOfBoundsException a) {
+                bodyBuilder.append(request);
             }
         }
 
@@ -55,11 +56,6 @@ public class Server {
         //the body is optional and contains additional information for the server
         //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
 
-        StringBuilder bodyBuilder = new StringBuilder();
-        bodyBuilder.append(request);
-        while ((request = in.readLine()) != null) {
-            bodyBuilder.append(request);
-        }
         String body = bodyBuilder.toString();
         System.out.println(body);
         /* {
