@@ -41,8 +41,9 @@ public class Server {
 
         Map<String, String> headers = new HashMap<>();
         StringBuilder bodyBuilder = new StringBuilder();
-        while ((request = in.readLine()) != null) {
+        while (in.ready()) {
             try {
+                request = in.readLine();
                 String[] headerData = request.split(": ", 2);
                 headers.put(headerData[0], headerData[1]);
                 System.out.println("headers: " + headers);
@@ -57,7 +58,7 @@ public class Server {
         //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
 
         String body = bodyBuilder.toString();
-        System.out.println(body);
+        System.out.println("body: " + body);
         /* {
             if (!in.readLine().isBlank()) {
                 while (!in.readLine().isEmpty())
