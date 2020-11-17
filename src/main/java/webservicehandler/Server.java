@@ -41,12 +41,13 @@ public class Server {
 
         Map<String, String> headers = new HashMap<>();
         while ((request = in.readLine()) != null) {
-            if (request.isEmpty()) {
+            if (!request.equals("\n\n")) {
+                String[] headerData = request.split(": ", 2);
+                headers.put(headerData[0], headerData[1]);
+                System.out.println("headers: " + headers);
+            } else {
                 break;
             }
-            String[] headerData = request.split(": ", 2);
-            headers.put(headerData[0], headerData[1]);
-            System.out.println("headers: " + headers);
         }
 
         //detect blank line to make sure the body exists
@@ -55,6 +56,7 @@ public class Server {
         //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
 
         StringBuilder bodyBuilder = new StringBuilder();
+        bodyBuilder.append(request);
         while ((request = in.readLine()) != null) {
             bodyBuilder.append(request);
         }
