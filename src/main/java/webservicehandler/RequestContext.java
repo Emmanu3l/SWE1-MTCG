@@ -16,7 +16,7 @@ public class RequestContext {
         this.verb = verb;
         this.URI = URI;
         this.version = version;
-        this.headers = new HashMap<>();
+        this.headers = headers;
         this.body = body;
     }
 

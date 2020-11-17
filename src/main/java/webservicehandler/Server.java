@@ -45,11 +45,11 @@ public class Server {
                 if (request == null) break;
                 String[] headerData = request.split(": ", 2);
                 headers.put(headerData[0], headerData[1]);
-                System.out.println("headers: " + headers);
             } catch (ArrayIndexOutOfBoundsException a) {
                 bodyBuilder.append(request);
             }
         }
+        System.out.println("headers: " + headers);
 
         //detect blank line to make sure the body exists
         //parse body (aka payload)
