@@ -20,4 +20,23 @@ public class RequestContext {
         this.body = body;
     }
 
+    public String getVerb() {
+        return verb;
+    }
+
+    public String getURI() {
+        return URI;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public String getBody() {
+        return body;
+    }
 }

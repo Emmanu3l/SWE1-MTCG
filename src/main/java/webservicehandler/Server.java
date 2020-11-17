@@ -67,10 +67,12 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-
+        
         return new RequestContext(verb, URI, version, headers, body);
     }
 
+    //TODO: REGISTER MESSAGE API ENDPOINTS
+    //TODO: TEST THE WEBSERCVICE HANDLER
     public static void sendResponse(RequestContext requestContext) {
 
     }
