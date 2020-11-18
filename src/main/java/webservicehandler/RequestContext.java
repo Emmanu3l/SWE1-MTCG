@@ -39,4 +39,24 @@ public class RequestContext {
     public String getBody() {
         return body;
     }
+
+    public void setVerb(String verb) {
+        this.verb = verb;
+    }
+
+    public void setURI(String URI) {
+        this.URI = URI;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
 }

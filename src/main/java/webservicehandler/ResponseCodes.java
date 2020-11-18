@@ -1,23 +1,31 @@
 package main.java.webservicehandler;
 
 public enum ResponseCodes {
-    OK,
-    CREATED,
-    ACCEPTED,
-    NO_CONTENT,
-    MOVED_PERMANENTLY,
-    FOUND,
-    SEE_OTHER,
-    NOT_MODIFIED,
-    TEMPORARY_REDIRECT,
-    BAD_REQUEST,
-    UNAUTHORIZED,
-    FORBIDDEN,
-    NOT_FOUND,
-    METHOD_NOT_ALLOWED,
-    NOT_ACCEPTABLE,
-    PRECONDITION_FAILED,
-    UNSUPPORTED_MEDIA_TYPE,
-    INTERNAL_SERVER_ERROR,
-    NOT_IMPLEMENTED
+    OK(200, "OK"),
+    CREATED(201, "Created"),
+    ACCEPTED(202, "Accepted"),
+    NO_CONTENT(204, "No Content"),
+    BAD_REQUEST(400, "Bad Request"),
+    NOT_FOUND(404, "Not Found");
+
+        private int code;
+        private String description;
+
+    ResponseCodes(int code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return code + " (" + description + ')';
+    }
 }

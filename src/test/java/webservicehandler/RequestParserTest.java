@@ -1,17 +1,22 @@
 package test.java.webservicehandler;
 
 import main.java.webservicehandler.RequestContext;
+import main.java.webservicehandler.RequestParser;
 import main.java.webservicehandler.Server;
-import java.io.*;
+import org.junit.jupiter.api.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class ServerTest {
+class RequestParserTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void parseRequest() throws IOException {
         String test = "GET /hello.htm HTTP/1.1\r\n"
                 + "User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\n"
@@ -23,11 +28,12 @@ class ServerTest {
         headers.put("Accept-Language", "en-us");
         Reader inputString = new StringReader(test);
         BufferedReader in = new BufferedReader(inputString);
-        RequestContext requestContext = Server.parseRequest(in);
+        RequestParser requestParser = new RequestParser();
+        RequestContext requestContext = requestParser.parseRequest(in);
         assertEquals("GET", requestContext.getVerb());
         assertEquals("/hello.htm", requestContext.getURI());
         assertEquals("HTTP/1.1", requestContext.getVersion());
         assertEquals(headers, requestContext.getHeaders());
-    }
 
+    }
 }
