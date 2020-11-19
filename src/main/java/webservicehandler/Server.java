@@ -4,6 +4,7 @@ import javax.swing.plaf.TableHeaderUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class Server implements Runnable {
     //TODO: REGISTER MESSAGE API ENDPOINTS
     //TODO: TEST THE WEBSERCVICE HANDLER
     //TODO: store POSTED/PUT DATA AND MAKE IT AVAILABLE FOR FUTURE GET REQUESTS OR UNAVAILABLE IN CASE OF DELETE
-    public static String sendResponse(RequestContext requestContext) {
+    public static String sendResponse(RequestContext requestContext, PrintWriter out) {
         StringBuilder responseBuilder = new StringBuilder();
         //handle request and send appropriate response
         //helpful info:
@@ -153,9 +154,12 @@ public class Server implements Runnable {
     @Override
     public void run() {
         BufferedReader in = null;
+        PrintWriter out = null;
         try {
             in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            out = new PrintWriter(s.getOutputStream(), true);
             RequestContext request = parseRequest(in);
+            sendResponse(request, out);
         } catch (IOException e) {
             e.printStackTrace();
         }
