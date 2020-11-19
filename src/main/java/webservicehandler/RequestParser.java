@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParser {
+
     //parse the http request's header containing the following information
     public RequestContext parseRequest(BufferedReader in) throws IOException {
         String request = null;
-        request = in.readLine();
+        do {
+            request = in.readLine();
+        } while (request == null);
+
         String[] parsedRequest = request.trim().split(" ");
         //parse header
         //request line: verb, URI, Version

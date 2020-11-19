@@ -2,16 +2,13 @@ package test.java.webservicehandler;
 
 import main.java.webservicehandler.RequestContext;
 import main.java.webservicehandler.RequestParser;
-import main.java.webservicehandler.Server;
 import org.junit.jupiter.api.Test;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class RequestParserTest {
