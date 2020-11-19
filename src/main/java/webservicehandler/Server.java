@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,20 +14,20 @@ public class Server implements Runnable {
     //for persistent storage, fields are needed
     private Socket s;
     //eine liste die für alle threads zugänglich ist, ist vonnöten
-    private ArrayList<String> content;
+    private RequestContext requestContext;
 
 
-    public Server(Socket s, ArrayList<String> content) {
+    public Server(Socket s, RequestContext requestContext) {
         this.s = s;
-        this.content = content;
+        this.requestContext = requestContext;
     }
 
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(8000);
-        ArrayList<String> messages = new ArrayList<>();
+        RequestContext requestContext = new RequestContext();
         while (true) {
             Socket socket = listener.accept();
-            Server server = new Server(socket, messages);
+            Server server = new Server(socket, requestContext);
             Thread thread = new Thread(server);
             //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main() instead of creating a thread
             thread.start();
@@ -61,7 +60,7 @@ public class Server implements Runnable {
     }
 
     //parse the http request's header containing the following information
-    public static RequestContext parseRequest(BufferedReader in) throws IOException {
+    public RequestContext parseRequest(BufferedReader in) throws IOException {
         String request = null;
         do {
             request = in.readLine();
@@ -111,8 +110,12 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-
-        return new RequestContext(verb, URI, version, headers, body);
+        requestContext.setVerb(verb);
+        requestContext.setURI(URI);
+        requestContext.setVersion(version);
+        requestContext.setHeaders(headers);
+        requestContext.setBody(body);
+        return requestContext;
     }
 
     //TODO: REGISTER MESSAGE API ENDPOINTS

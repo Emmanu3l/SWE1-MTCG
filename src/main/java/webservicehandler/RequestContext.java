@@ -12,12 +12,7 @@ public class RequestContext {
     private Map<String, String> headers;
     private String body;
 
-    public RequestContext(String verb, String URI, String version, Map<String, String> headers, String body) {
-        this.verb = verb;
-        this.URI = URI;
-        this.version = version;
-        this.headers = headers;
-        this.body = body;
+    public RequestContext() {
     }
 
     public String getVerb() {
