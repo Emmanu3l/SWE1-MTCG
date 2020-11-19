@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Server implements Runnable {
@@ -43,6 +42,21 @@ public class Server implements Runnable {
         //mehr recherchieren
         //server LOOP!!!
         //TODO: connect to postman or insomnia via https://localhost:8000/
+
+    }
+
+    @Override
+    public void run() {
+        BufferedReader in = null;
+        PrintWriter out = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            out = new PrintWriter(s.getOutputStream(), true);
+            RequestContext request = parseRequest(in);
+            sendResponse(request, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -125,44 +139,33 @@ public class Server implements Runnable {
             /*if requestContext.getURI().equals()) {
                 return requestContext.getVerb() + " " +
             }*/
+            out.write(ResponseCodes.BAD_REQUEST.toString());
 
 
         } else if (requestContext.getVerb().equals("POST")) {
             //create new resource
             //if created: 201 (Created) + entity which describes the status of the request and refers to the new resource, and a location header
             //if resource can't be identified by a URI, either HTTP response code 200 (OK) or 204 (No Content)
+            out.write(ResponseCodes.BAD_REQUEST.toString());
 
         } else if (requestContext.getVerb().equals("PUT")) {
             //update an existing resource
             //if it doesn't exist yet, decide between creating it or not
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
+            out.write(ResponseCodes.BAD_REQUEST.toString());
 
         } else if (requestContext.getVerb().equals("DELETE")) {
             //delete resources identified by request URI
             //if successful and response includes entity describing status: 200 (OK)
             //if action has been queued: 202 (Accepted)
             //if action was performed but the response does not include an entity: 204 (No Content)
+            out.write(ResponseCodes.BAD_REQUEST.toString());
 
         } else {
-
+            out.write(ResponseCodes.BAD_REQUEST.toString());
         }
         return responseBuilder.toString();
     }
 
-
-    @Override
-    public void run() {
-        BufferedReader in = null;
-        PrintWriter out = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            out = new PrintWriter(s.getOutputStream(), true);
-            RequestContext request = parseRequest(in);
-            sendResponse(request, out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
