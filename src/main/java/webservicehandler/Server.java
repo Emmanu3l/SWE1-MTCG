@@ -1,23 +1,37 @@
 package main.java.webservicehandler;
 
+import javax.swing.plaf.TableHeaderUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Server {
+public class Server implements Runnable {
+    //for persistent storage, fields are needed
+    private Socket s;
+    //eine liste die für alle threads zugänglich ist, ist vonnöten
+    private ArrayList<String> content;
+
+
+    public Server(Socket s, ArrayList<String> content) {
+        this.s = s;
+        this.content = content;
+    }
 
     public static void main(String[] args) throws IOException {
+        ServerSocket listener = new ServerSocket(8000);
+        ArrayList<String> messages = new ArrayList<>();
         while (true) {
-            ServerSocket listener = new ServerSocket(8000);
             Socket socket = listener.accept();
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            RequestContext request = parseRequest(in);
-            System.out.println(sendResponse(request));
-
+            Server server = new Server(socket, messages);
+            Thread thread = new Thread(server);
+            //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main() instead of creating a thread
+            thread.start();
         }
         //thread für server um immer neue requests zu akzeptieren
         //online resourcen checken
@@ -98,6 +112,8 @@ public class Server {
         //https://learnxinyminutes.com/docs/java/
         //https://restfulapi.net/http-status-codes/
 
+
+
         if (requestContext.getVerb().equals("GET")) {
             //retrieve information without modifying it
             //if found: 200 (OK)
@@ -134,5 +150,15 @@ public class Server {
     }
 
 
+    @Override
+    public void run() {
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            RequestContext request = parseRequest(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
 }
