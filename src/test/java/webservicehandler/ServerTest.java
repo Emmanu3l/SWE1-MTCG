@@ -1,17 +1,19 @@
 package test.java.webservicehandler;
 
 import main.java.webservicehandler.RequestContext;
-import main.java.webservicehandler.RequestParser;
+import main.java.webservicehandler.Server;
 import org.junit.jupiter.api.Test;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class RequestParserTest {
+class ServerTest {
 
     @Test
     void parseRequest() throws IOException {
@@ -25,12 +27,14 @@ class RequestParserTest {
         headers.put("Accept-Language", "en-us");
         Reader inputString = new StringReader(test);
         BufferedReader in = new BufferedReader(inputString);
-        RequestParser requestParser = new RequestParser();
-        RequestContext requestContext = requestParser.parseRequest(in);
+        RequestContext requestContext = Server.parseRequest(in);
         assertEquals("GET", requestContext.getVerb());
         assertEquals("/hello.htm", requestContext.getURI());
         assertEquals("HTTP/1.1", requestContext.getVersion());
         assertEquals(headers, requestContext.getHeaders());
+    }
 
+    @Test
+    void sendResponse() {
     }
 }
