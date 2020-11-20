@@ -1,19 +1,19 @@
 package main.java.webservicehandler;
 
-import javax.swing.plaf.TableHeaderUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Server implements Runnable {
     //for persistent storage, fields are needed
-    private Socket s;
+    private final Socket s;
     //eine liste die für alle threads zugänglich ist, ist vonnöten
-    private RequestContext requestContext;
+    private final RequestContext requestContext;
 
 
     public Server(Socket s, RequestContext requestContext) {
@@ -22,15 +22,20 @@ public class Server implements Runnable {
     }
 
     public static void main(String[] args) throws IOException {
-        ServerSocket listener = new ServerSocket(8000);
-        RequestContext requestContext = new RequestContext();
-        while (true) {
-            Socket socket = listener.accept();
-            Server server = new Server(socket, requestContext);
-            Thread thread = new Thread(server);
-            //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main() instead of creating a thread
-            thread.start();
+        try {
+            ServerSocket listener = new ServerSocket(8000);
+            RequestContext requestContext = new RequestContext();
+            while (true) {
+                Socket socket = listener.accept();
+                Server server = new Server(socket, requestContext);
+                Thread thread = new Thread(server);
+                //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main() instead of creating a thread
+                thread.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         //thread für server um immer neue requests zu akzeptieren
         //online resourcen checken
         //mehr objektorientierung
@@ -45,7 +50,7 @@ public class Server implements Runnable {
         BufferedReader in = null;
         PrintWriter out = null;
         try {
-            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
             out = new PrintWriter(s.getOutputStream(), true);
 
             //parse the http request's header containing the following information
@@ -54,27 +59,29 @@ public class Server implements Runnable {
             String readRequest = in.readLine();
             while (readRequest!= null && !readRequest.isBlank()) {
                 requestBuilder.append(readRequest).append("\r\n");
+                System.out.println("readRequest: " + readRequest);
                 readRequest = in.readLine();
             }
             request = requestBuilder.toString();
-            String[] parsedRequest = request.trim().split("\r\n");
-            String[] requestLine = parsedRequest[0].trim().split(" ");
-            //parse header
-            //request line: verb, URI, Version
-            //optional request headers (name:value, ...)
-            //check for blank line, then call parseBody
+            //use .trim()?
+            String[] parsedRequest = request.split("\r\n");
+            String[] requestLine = parsedRequest[0].split(" ");
+            System.out.println("requestLine: "+ requestLine);
             String verb = requestLine[0];
             System.out.println("verb: " + verb);
             String URI = requestLine[1];
             System.out.println("URI: " + URI);
             String version = requestLine[2];
             System.out.println("version: " + version);
+            //parse header
+            //request line: verb, URI, Version
+            //optional request headers (name:value, ...)
+            //check for blank line, then call parseBody
             //new line
             //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
             ArrayList<String> headers = new ArrayList<>();
             for (int i = 1; i < parsedRequest.length; i++) {
                 headers.add(parsedRequest[i]);
-                //System.out.println(i);
             }
             System.out.println("headers: " + headers);
 
@@ -108,6 +115,10 @@ public class Server implements Runnable {
         //https://restfulapi.net/http-methods
         //https://learnxinyminutes.com/docs/java/
         //https://restfulapi.net/http-status-codes/
+
+        /*if (this.requestContext.getURI() == null) {
+            responseBuilder.append(ResponseCodes.)
+        }*/
 
         if (requestContext.getVerb().equals("GET")) {
             //retrieve information without modifying it
@@ -145,7 +156,9 @@ public class Server implements Runnable {
             responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
         }
         if (out != null) {
-            out.write(responseBuilder.toString());
+            //out.print(responseBuilder.toString());
+            out.println("hello");
+            out.flush();
         }
     }
 
