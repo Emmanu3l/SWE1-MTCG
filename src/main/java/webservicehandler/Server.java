@@ -106,7 +106,12 @@ public class Server implements Runnable {
                 String[] headerData = parsedRequest[i].split(": ", 2);
                 headers.add(parsedRequest[i]);
             }*/
-            ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
+            //ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
+            ArrayList<String> headers = new ArrayList<>();
+            for (int i = 1; i < parsedRequest.length; i++) {
+                headers.add(parsedRequest[i]);
+                //System.out.println(i);
+            }
             System.out.println("headers: " + headers);
 
             //detect blank line to make sure the body exists
@@ -114,8 +119,28 @@ public class Server implements Runnable {
             //the body is optional and contains additional information for the server
             //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
 
-            //String body = bodyBuilder.toString();
-            //System.out.println("body: " + body);
+            //StringBuilder bodyBuilder = new StringBuilder();
+            /*if (parsedRequest[headers.size() + 1].isBlank()) {
+                for (int i = headers.size() + 2; i < parsedRequest.length - 1; i++) {
+                    bodyBuilder.append(parsedRequest[i]);
+                }
+            }*/
+            //String body = parsedRequest[headers.size() + 1];
+            /*while (readBody != null) {
+                if (!readBody.isBlank()) {
+                    bodyBuilder.append(readBody);
+                }
+                readBody = in.readLine();
+            }*/
+
+            StringBuilder bodyBuilder = new StringBuilder();
+            //String readBody = in.readLine();
+            while (in.ready()) {
+                //for some godforsaken reason the body isn't recognized as characters and it took me a few days to get this
+                bodyBuilder.append((char)in.read());
+            }
+            String body = bodyBuilder.toString();
+            System.out.println("body: " + body);
         /* {
             if (!in.readLine().isBlank()) {
                 while (!in.readLine().isEmpty())
