@@ -33,12 +33,9 @@ public class Server implements Runnable {
         }
         //thread für server um immer neue requests zu akzeptieren
         //online resourcen checken
-        //thread für Request Parser
-        //eventuell RequestParser umbenennen
         //mehr objektorientierung
         //branches
         //mehr recherchieren
-        //server LOOP!!!
         //TODO: connect to postman or insomnia via https://localhost:8000/
 
     }
@@ -50,23 +47,9 @@ public class Server implements Runnable {
         try {
             in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             out = new PrintWriter(s.getOutputStream(), true);
-            //RequestContext request = parseRequest(in);
-            //sendResponse(request, out);
 
             //parse the http request's header containing the following information
             String request = null;
-            /*do {
-                request = in.readLine();
-            } while (request == null || request.isEmpty() || request.isBlank());*/
-
-            /*while (true) {
-                final String readRequest = readOneLine(in);
-                if (readRequest.isEmpty()) {
-                    continue;
-                }
-                request = readRequest;
-                break;
-            }*/
             StringBuilder requestBuilder = new StringBuilder();
             String readRequest = in.readLine();
             while (readRequest!= null && !readRequest.isBlank()) {
@@ -87,26 +70,7 @@ public class Server implements Runnable {
             String version = requestLine[2];
             System.out.println("version: " + version);
             //new line
-            //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
             //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
-
-            //TODO: replace with arraylist to avoid errors
-            //Map<String, String> headers = new HashMap<>();
-            /*StringBuilder bodyBuilder = new StringBuilder();
-            try {
-                request = in.readLine();
-                String[] headerData = request.split(": ", 2);
-                headers.put(headerData[0], headerData[1]);
-            } catch (ArrayIndexOutOfBoundsException a) {
-                bodyBuilder.append(request);
-            }
-            System.out.println("headers: " + headers);*/
-
-            /*for (int i = 1; i < parsedRequest.length; i++) {
-                String[] headerData = parsedRequest[i].split(": ", 2);
-                headers.add(parsedRequest[i]);
-            }*/
-            //ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
             ArrayList<String> headers = new ArrayList<>();
             for (int i = 1; i < parsedRequest.length; i++) {
                 headers.add(parsedRequest[i]);
@@ -117,43 +81,19 @@ public class Server implements Runnable {
             //detect blank line to make sure the body exists
             //parse body (aka payload)
             //the body is optional and contains additional information for the server
-            //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
-
-            //StringBuilder bodyBuilder = new StringBuilder();
-            /*if (parsedRequest[headers.size() + 1].isBlank()) {
-                for (int i = headers.size() + 2; i < parsedRequest.length - 1; i++) {
-                    bodyBuilder.append(parsedRequest[i]);
-                }
-            }*/
-            //String body = parsedRequest[headers.size() + 1];
-            /*while (readBody != null) {
-                if (!readBody.isBlank()) {
-                    bodyBuilder.append(readBody);
-                }
-                readBody = in.readLine();
-            }*/
 
             StringBuilder bodyBuilder = new StringBuilder();
-            //String readBody = in.readLine();
             while (in.ready()) {
                 //for some godforsaken reason the body isn't recognized as characters and it took me a few days to get this
                 bodyBuilder.append((char)in.read());
             }
             String body = bodyBuilder.toString();
             System.out.println("body: " + body);
-        /* {
-            if (!in.readLine().isBlank()) {
-                while (!in.readLine().isEmpty())
-                bodyBuilder.append(in.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
             requestContext.setVerb(verb);
             requestContext.setURI(URI);
             requestContext.setVersion(version);
             requestContext.setHeaders(headers);
-            //requestContext.setBody(body);
+            requestContext.setBody(body);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -208,11 +148,5 @@ public class Server implements Runnable {
             out.write(responseBuilder.toString());
         }
     }
-
-    /*public static String readOneLine(final BufferedReader in) throws IOException {
-        //request line only or any line?
-        StringTokenizer splitter = new StringTokenizer(in.readLine());
-        return splitter.nextToken() + ";" + splitter.nextToken() + ";" + splitter.nextToken();
-    }*/
 
 }
