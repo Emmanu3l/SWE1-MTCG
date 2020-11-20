@@ -7,8 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Server implements Runnable {
     //for persistent storage, fields are needed
@@ -56,27 +55,44 @@ public class Server implements Runnable {
 
             //parse the http request's header containing the following information
             String request = null;
-            do {
+            /*do {
                 request = in.readLine();
-            } while (request == null);
+            } while (request == null || request.isEmpty() || request.isBlank());*/
 
-            String[] parsedRequest = request.trim().split(" ");
+            /*while (true) {
+                final String readRequest = readOneLine(in);
+                if (readRequest.isEmpty()) {
+                    continue;
+                }
+                request = readRequest;
+                break;
+            }*/
+            StringBuilder requestBuilder = new StringBuilder();
+            String readRequest = in.readLine();
+            while (readRequest!= null && !readRequest.isBlank()) {
+                requestBuilder.append(readRequest).append("\r\n");
+                readRequest = in.readLine();
+            }
+            request = requestBuilder.toString();
+            String[] parsedRequest = request.trim().split("\r\n");
+            String[] requestLine = parsedRequest[0].trim().split(" ");
             //parse header
             //request line: verb, URI, Version
             //optional request headers (name:value, ...)
             //check for blank line, then call parseBody
-            String verb = parsedRequest[0];
+            String verb = requestLine[0];
             System.out.println("verb: " + verb);
-            String URI = parsedRequest[1];
+            String URI = requestLine[1];
             System.out.println("URI: " + URI);
-            String version = parsedRequest[2];
+            String version = requestLine[2];
             System.out.println("version: " + version);
             //new line
             //further header values are supposed to be managed as key-value pairs -> HashMap<Key, Value>
             //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
 
-            Map<String, String> headers = new HashMap<>();
-            StringBuilder bodyBuilder = new StringBuilder();
+            //TODO: replace with arraylist to avoid errors
+            //Map<String, String> headers = new HashMap<>();
+            /*StringBuilder bodyBuilder = new StringBuilder();
             try {
                 request = in.readLine();
                 String[] headerData = request.split(": ", 2);
@@ -84,6 +100,13 @@ public class Server implements Runnable {
             } catch (ArrayIndexOutOfBoundsException a) {
                 bodyBuilder.append(request);
             }
+            System.out.println("headers: " + headers);*/
+
+            /*for (int i = 1; i < parsedRequest.length; i++) {
+                String[] headerData = parsedRequest[i].split(": ", 2);
+                headers.add(parsedRequest[i]);
+            }*/
+            ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
             System.out.println("headers: " + headers);
 
             //detect blank line to make sure the body exists
@@ -91,8 +114,8 @@ public class Server implements Runnable {
             //the body is optional and contains additional information for the server
             //int bodyLength = Integer.parseInt(headers.get("Content-Length"));
 
-            String body = bodyBuilder.toString();
-            System.out.println("body: " + body);
+            //String body = bodyBuilder.toString();
+            //System.out.println("body: " + body);
         /* {
             if (!in.readLine().isBlank()) {
                 while (!in.readLine().isEmpty())
@@ -105,7 +128,7 @@ public class Server implements Runnable {
             requestContext.setURI(URI);
             requestContext.setVersion(version);
             requestContext.setHeaders(headers);
-            requestContext.setBody(body);
+            //requestContext.setBody(body);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -131,34 +154,40 @@ public class Server implements Runnable {
             /*if requestContext.getURI().equals()) {
                 return requestContext.getVerb() + " " +
             }*/
-            out.write(ResponseCodes.BAD_REQUEST.toString());
-
+            responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
 
         } else if (requestContext.getVerb().equals("POST")) {
             //create new resource
             //if created: 201 (Created) + entity which describes the status of the request and refers to the new resource, and a location header
             //if resource can't be identified by a URI, either HTTP response code 200 (OK) or 204 (No Content)
-            out.write(ResponseCodes.BAD_REQUEST.toString());
+            responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
 
         } else if (requestContext.getVerb().equals("PUT")) {
             //update an existing resource
             //if it doesn't exist yet, decide between creating it or not
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
-            out.write(ResponseCodes.BAD_REQUEST.toString());
+            responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
 
         } else if (requestContext.getVerb().equals("DELETE")) {
             //delete resources identified by request URI
             //if successful and response includes entity describing status: 200 (OK)
             //if action has been queued: 202 (Accepted)
             //if action was performed but the response does not include an entity: 204 (No Content)
-            out.write(ResponseCodes.BAD_REQUEST.toString());
+            responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
 
         } else {
-            out.write(ResponseCodes.BAD_REQUEST.toString());
+            responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
         }
-
-
+        if (out != null) {
+            out.write(responseBuilder.toString());
+        }
     }
+
+    /*public static String readOneLine(final BufferedReader in) throws IOException {
+        //request line only or any line?
+        StringTokenizer splitter = new StringTokenizer(in.readLine());
+        return splitter.nextToken() + ";" + splitter.nextToken() + ";" + splitter.nextToken();
+    }*/
 
 }
