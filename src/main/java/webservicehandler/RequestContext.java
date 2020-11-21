@@ -119,7 +119,7 @@ public class RequestContext {
             //for some godforsaken reason the body isn't recognized as chars and it took me a few days to notice
             bodyBuilder.append((char)in.read());
         }
-        String body = bodyBuilder.toString();
+        String body = bodyBuilder.toString().trim();
         System.out.println("body: " + body);
         this.setBody(body);
     }

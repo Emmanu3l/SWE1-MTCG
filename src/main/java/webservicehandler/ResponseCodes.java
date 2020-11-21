@@ -73,8 +73,9 @@ public enum ResponseCodes {
             if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
                 if (messages.get(Integer.parseInt(messageID)) != null
                         && !messages.get(Integer.parseInt(messageID)).isEmpty()) {
-                    messages.add(Integer.parseInt(messageID), requestContext.getBody());
+                    messages.set(Integer.parseInt(messageID), requestContext.getBody());
                     responseBuilder.append(ResponseCodes.OK.toString());
+                    //responseBuilder.append(messages.indexOf(requestContext.getBody()));
                 } else if (requestContext.getBody() == null || requestContext.getBody().isEmpty()
                         || requestContext.getBody().isBlank()) {
                     responseBuilder.append(ResponseCodes.NO_CONTENT.toString());

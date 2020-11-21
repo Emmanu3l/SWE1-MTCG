@@ -59,6 +59,7 @@ public class Server implements Runnable {
             this.requestContext.parseBody(in);
             String response = ResponseCodes.generateResponse(requestContext, messages);
             out.println(response);
+            out.println(messages);
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
