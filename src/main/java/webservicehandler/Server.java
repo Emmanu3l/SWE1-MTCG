@@ -36,7 +36,8 @@ public class Server implements Runnable {
                 Socket socket = listener.accept();
                 Server server = new Server(socket, requestContext, messages);
                 Thread thread = new Thread(server);
-                //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main() instead of creating a thread
+                //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main()
+                //instead of creating a thread
                 thread.start();
             }
         } catch (IOException e) {
@@ -99,7 +100,7 @@ public class Server implements Runnable {
 
         StringBuilder bodyBuilder = new StringBuilder();
         while (in.ready()) {
-            //for some godforsaken reason the body isn't recognized as characters and it took me a few days to get this
+            //for some godforsaken reason the body isn't recognized as chars and it took me a few days to notice
             bodyBuilder.append((char)in.read());
         }
         String body = bodyBuilder.toString();
@@ -144,7 +145,8 @@ public class Server implements Runnable {
 
         } else if (requestContext.getVerb().equals("POST")) {
             //create new resource
-            //if created: 201 (Created) + entity which describes the status of the request and refers to the new resource, and a location header
+            //if created: 201 (Created) + entity which describes the status of the request
+            //and refers to the new resource, and a location header
             //if resource can't be identified by a URI, either HTTP response code 200 (OK) or 204 (No Content)
 
             if (this.requestContext.getURI().equals("/messages")) {
@@ -157,15 +159,18 @@ public class Server implements Runnable {
 
         } else if (requestContext.getVerb().equals("PUT")) {
             //update an existing resource
-            //if it doesn't exist yet, decide between creating it or not (in my case it will not be created to uphold the consistency of the request verbs)
+            //if it doesn't exist yet, decide between creating it or not (in my case it will not be created
+            //to uphold the consistency of the request verbs)
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
 
             if (messageID != null && this.requestContext.getURI().equals("/messages/" + messageID)) {
-                if (this.messages.get(Integer.parseInt(messageID)) != null && !this.messages.get(Integer.parseInt(messageID)).isEmpty()) {
+                if (this.messages.get(Integer.parseInt(messageID)) != null
+                        && !this.messages.get(Integer.parseInt(messageID)).isEmpty()) {
                     this.messages.add(Integer.parseInt(messageID), this.requestContext.getBody());
                     responseBuilder.append(ResponseCodes.OK.toString());
-                } else if (this.requestContext.getBody() == null || this.requestContext.getBody().isEmpty() || this.requestContext.getBody().isBlank()) {
+                } else if (this.requestContext.getBody() == null || this.requestContext.getBody().isEmpty()
+                        || this.requestContext.getBody().isBlank()) {
                     responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
                 }
             }
