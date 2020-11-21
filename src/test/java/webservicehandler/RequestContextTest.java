@@ -1,7 +1,6 @@
 package test.java.webservicehandler;
 
 import main.java.webservicehandler.RequestContext;
-import main.java.webservicehandler.Server;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -12,11 +11,11 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ServerTest {
+class RequestContextTest {
 
     @Test
-    void generateResponse() throws IOException {
-        /*String test = "GET /messages HTTP/1.1\r\n"
+    void parseRequest() throws IOException {
+        String test = "GET /messages HTTP/1.1\r\n"
                 + "User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\n"
                 + "Host: www.google.com\r\n"
                 + "Accept-Language: en-us\r\n"
@@ -24,10 +23,17 @@ class ServerTest {
                 + "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
                 + "<string xmlns=\"http://clearforest.com/\">string</string>\r\n";
 
+        ArrayList<String> headers = new ArrayList<>();
+        headers.add("User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)");
+        headers.add("Host: www.google.com");
+        headers.add("Accept-Language: en-us");
         Reader inputString = new StringReader(test);
         BufferedReader in = new BufferedReader(inputString);
         RequestContext requestContext = new RequestContext();
         requestContext.parseRequest(in);
-        assertEquals("HTTP/1.1", Server.generateResponse(test));*/
+        assertEquals("GET", requestContext.getVerb());
+        assertEquals("/messages", requestContext.getURI());
+        assertEquals("HTTP/1.1", requestContext.getVersion());
+        assertEquals(headers, requestContext.getHeaders());
     }
 }

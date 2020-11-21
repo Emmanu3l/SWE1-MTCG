@@ -16,7 +16,6 @@ public class Client {
             out.write("\r\n");
             out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
             out.write("<string xmlns=\"http://clearforest.com/\">string</string>\r\n");
-
             out.flush();
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String request;
