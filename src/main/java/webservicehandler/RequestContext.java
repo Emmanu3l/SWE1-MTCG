@@ -1,9 +1,5 @@
 package main.java.webservicehandler;
-
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestContext {
     //GET, POST, PUT, DELETE
@@ -55,5 +51,16 @@ public class RequestContext {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getMessageID() {
+        String messageID;
+        String[] extractID = this.URI.split("/");
+        if (extractID.length == 3) {
+            messageID = extractID[2];
+        } else {
+            messageID = null;
+        }
+        return messageID;
     }
 }

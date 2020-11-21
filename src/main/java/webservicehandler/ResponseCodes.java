@@ -26,6 +26,6 @@ public enum ResponseCodes {
 
     @Override
     public String toString() {
-        return code + " (" + description + ')';
+        return " " + code + " (" + description + ")\r\n";
     }
 }
