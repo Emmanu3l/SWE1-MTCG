@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+//TODO: mehr objektorientierung
+//TODO: branches
+//TODO: connect to postman or insomnia via https://localhost:8000/ (failed)
+
 public class Server implements Runnable {
     //for persistent storage, fields are needed
     private final Socket s;
@@ -43,11 +47,6 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //TODO: mehr objektorientierung
-        //TODO: branches
-        //TODO: connect to postman or insomnia via https://localhost:8000/ (failed)
-
     }
 
     @Override
@@ -113,9 +112,7 @@ public class Server implements Runnable {
     }
 
     public void sendResponse(PrintWriter out) {
-        //TODO: REGISTER MESSAGE API ENDPOINTS
-        //TODO: TEST THE WEBSERCVICE HANDLER
-        //TODO: store POSTED/PUT DATA AND MAKE IT AVAILABLE FOR FUTURE GET REQUESTS OR UNAVAILABLE IN CASE OF DELETE
+        //TODO: TEST THE WEBSERVICE HANDLER
         //handle request and send appropriate response
         //helpful info:
         //https://en.wikipedia.org/wiki/HTTP_location
