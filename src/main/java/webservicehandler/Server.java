@@ -104,6 +104,7 @@ public class Server implements Runnable {
         }
         String body = bodyBuilder.toString();
         System.out.println("body: " + body);
+        //TODO: change to return?
         requestContext.setVerb(verb);
         requestContext.setURI(URI);
         requestContext.setVersion(version);
@@ -188,6 +189,7 @@ public class Server implements Runnable {
             responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
         }
         if (out != null) {
+            //TODO: change to return?
             out.println(responseBuilder.toString().trim());
             out.flush();
         }
