@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseCodesTest {
 
-    //TODO: add generateResponse for POST and DELETE
+    //TODO: add generateResponse Test for POST and DELETE
 
     @Test
     void generateResponse1() throws IOException {
