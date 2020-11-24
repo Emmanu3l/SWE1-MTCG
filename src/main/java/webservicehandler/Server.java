@@ -24,6 +24,7 @@ public class Server implements Runnable {
     public Server(Socket s, RequestContext requestContext, ArrayList<String> messages) {
         this.s = s;
         this.requestContext = requestContext;
+        //TODO: messages: dictionary, hashmap, treemap um message ID beizubehalten
         this.messages = messages;
     }
     public static void main(String[] args) throws IOException {
