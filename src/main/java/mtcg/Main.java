@@ -1,7 +1,7 @@
-package main.java;
+package main.java.mtcg;
 
-import main.java.cards.Card;
-import main.java.cards.Monster;
+import main.java.mtcg.cards.Card;
+import main.java.mtcg.cards.Monster;
 
 import java.util.LinkedList;
 

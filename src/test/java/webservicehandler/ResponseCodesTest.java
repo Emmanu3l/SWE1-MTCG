@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,12 +20,12 @@ class ResponseCodesTest {
 
     @Test
     void generateResponse1() throws IOException {
-        ArrayList<String> messages = new ArrayList<>();
-        messages.add("Hallo,");
-        messages.add(" ich");
-        messages.add(" bin");
-        messages.add(" eine");
-        messages.add(" Nachricht");
+        Dictionary<Integer, String> messages = new Hashtable<>();
+        messages.put(1, "Hallo,");
+        messages.put(2, " ich");
+        messages.put(3, " bin");
+        messages.put(4, " eine");
+        messages.put(5, " Nachricht");
 
         String test = "GET /messages HTTP/1.1\r\n"
             + "User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\n"
@@ -47,12 +49,12 @@ class ResponseCodesTest {
 
     @Test
     void generateResponse2() throws IOException {
-        ArrayList<String> messages = new ArrayList<>();
-        messages.add("Hallo,");
-        messages.add(" ich");
-        messages.add(" bin");
-        messages.add(" eine");
-        messages.add(" Nachricht");
+        Dictionary<Integer, String> messages = new Hashtable<>();
+        messages.put(1, "Hallo,");
+        messages.put(2, " ich");
+        messages.put(3, " bin");
+        messages.put(4, " eine");
+        messages.put(5, " Nachricht");
 
         String test = "PUT /messages/3 HTTP/1.1\r\n"
                 + "User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\n"

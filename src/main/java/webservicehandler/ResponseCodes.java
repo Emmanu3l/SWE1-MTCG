@@ -1,6 +1,7 @@
 package main.java.webservicehandler;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 public enum ResponseCodes {
     OK(200, "OK"),
@@ -31,7 +32,7 @@ public enum ResponseCodes {
         return " " + code + " (" + description + ")\r\n";
     }
 
-    public static String generateResponse(RequestContext requestContext, ArrayList<String> messages) {
+    public static String generateResponse(RequestContext requestContext, Dictionary<Integer, String> messages) {
         //TODO: TEST THE WEBSERVICE HANDLER
         //handle request and send appropriate response
         StringBuilder responseBuilder = new StringBuilder();
@@ -45,8 +46,8 @@ public enum ResponseCodes {
             //syntax error: 400 (BAD REQUEST)
             if (requestContext.getURI().equals("/messages")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
-                for (String s: messages) {
-                    responseBuilder.append(s);
+                for (int i = 0; i < messages.size(); i++) {
+                    responseBuilder.append(messages.get(i));
                 }
             } else if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
@@ -58,9 +59,10 @@ public enum ResponseCodes {
             //and refers to the new resource, and a location header
             //if resource can't be identified by a URI, either HTTP response code 200 (OK) or 204 (No Content)
             if (requestContext.getURI().equals("/messages")) {
-                messages.add(requestContext.getBody());
+                messages.put(messages.size(), requestContext.getBody());
                 responseBuilder.append(ResponseCodes.CREATED.toString());
-                responseBuilder.append(messages.indexOf(requestContext.getBody()));
+                //responseBuilder.append(messages.indexOf(requestContext.getBody()));
+                responseBuilder.append(messages.get(requestContext.getBody()));
             } else {
                 responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
             }
@@ -73,7 +75,7 @@ public enum ResponseCodes {
             if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
                 if (messages.get(Integer.parseInt(messageID)) != null
                         && !messages.get(Integer.parseInt(messageID)).isEmpty()) {
-                    messages.set(Integer.parseInt(messageID), requestContext.getBody());
+                    messages.put(Integer.parseInt(messageID), requestContext.getBody());
                     responseBuilder.append(ResponseCodes.OK.toString());
                     //responseBuilder.append(messages.indexOf(requestContext.getBody()));
                 } else if (requestContext.getBody() == null || requestContext.getBody().isEmpty()

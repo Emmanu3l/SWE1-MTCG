@@ -1,4 +1,4 @@
-package main.java.cards;
+package main.java.mtcg.cards;
 
 public abstract class Card {
     private String name;

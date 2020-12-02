@@ -20,8 +20,8 @@ public class Server implements Runnable {
     private final Socket s;
     //list that is available to all threads
     private RequestContext requestContext;
-    private ArrayList<String> messages;
-    public Server(Socket s, RequestContext requestContext, ArrayList<String> messages) {
+    private Dictionary<Integer, String> messages;
+    public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
         this.requestContext = requestContext;
         //TODO: messages: dictionary, hashmap, treemap um message ID beizubehalten
@@ -31,12 +31,12 @@ public class Server implements Runnable {
         try {
             ServerSocket listener = new ServerSocket(8000);
             RequestContext requestContext = new RequestContext();
-            ArrayList<String> messages = new ArrayList<>();
-            messages.add("Hallo,");
-            messages.add(" ich");
-            messages.add(" bin");
-            messages.add(" eine");
-            messages.add(" Nachricht");
+            Dictionary<Integer, String> messages = new Hashtable<>();
+            messages.put(1, "Hallo,");
+            messages.put(2, " ich");
+            messages.put(3, " bin");
+            messages.put(4, " eine");
+            messages.put(5, " Nachricht");
             while (true) {
                 Socket socket = listener.accept();
                 Server server = new Server(socket, requestContext, messages);
@@ -54,13 +54,14 @@ public class Server implements Runnable {
         BufferedReader in = null;
         PrintWriter out = null;
         try {
-            in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
+            //in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             out = new PrintWriter(s.getOutputStream(), true);
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
             String response = ResponseCodes.generateResponse(requestContext, messages);
             out.println(response);
-            out.println(messages);
+            //out.println(messages);
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
