@@ -2,17 +2,17 @@ package main.java.mtcg;
 
 import main.java.mtcg.cards.Card;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class User {
     private String username;
     private String password;
-    private LinkedList<Card> deck;
-    private LinkedList<Card> stack;
+    private ArrayList<Card> deck;
+    private ArrayList<Card> stack;
     private int coins = 20;
     private int elo = 100;
 
-    public User(String username, String password, LinkedList<Card> deck, LinkedList<Card> stack) {
+    public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
         this.username = username;
         this.password = password;
         this.deck = deck;
