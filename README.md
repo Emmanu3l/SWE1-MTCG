@@ -29,6 +29,7 @@ I mainly fixed small things that I (of course) only noticed after submitting my 
 I also changed the file type for the messages from list to dictionary.
 If I recall correctly, the changes made by me during this time fixed *some*
 of the errors I got when working with Postman and Insomnia, but not all of them.
+I also tested my application some more with cURL.
 I decided to carry on with the mtcg part of the project before revisiting these errors,
 which seemed to be mostly encoding related.
 ~5 hours

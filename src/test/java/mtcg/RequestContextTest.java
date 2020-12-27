@@ -1,4 +1,4 @@
-package test.java.webservicehandler;
+package test.java.mtcg;
 
 import main.java.webservicehandler.RequestContext;
 import org.junit.jupiter.api.Test;
