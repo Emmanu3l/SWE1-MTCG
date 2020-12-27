@@ -11,17 +11,19 @@ public class Battle {
     private static User battlerOne;
     private static User battlerTwo;
 
+
+    //TODO: need to parse type and race from curl input so i can get those in my game logic method
+    //TODO: need to implement "game mechanics" (users can login, register, acquire cards, define a deck, battle, and compare stats in score board)
     public static void main(String[] args) {
-        //maximum of 100 cards
+        //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
             // each battler draws one card each
             Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
             Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
             int damageDealt = gameLogic(randomCardOne, randomCardTwo);
 
-
-
         }
+        //if it is a draw, the elo stays unchanged
 
     }
 
@@ -29,6 +31,9 @@ public class Battle {
     public static int gameLogic(Card randomCardOne, Card randomCardTwo) {
         int damageDealt = 0;
         if (randomCardOne instanceof Monster && randomCardTwo instanceof Monster) {
+            if (randomCardOne.getElement() == randomCardOne.getElement()) {
+
+            }
             damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
         } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Spell){
             if (randomCardOne.getElement() == randomCardOne.getElement()) {
