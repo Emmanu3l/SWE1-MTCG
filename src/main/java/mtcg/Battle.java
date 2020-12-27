@@ -27,7 +27,7 @@ public class Battle {
 
     //create GameResult Class which contains damage dealt and the winner?
     public static int gameLogic(Card randomCardOne, Card randomCardTwo) {
-        int damageDealt;
+        int damageDealt = 0;
         if (randomCardOne instanceof Monster && randomCardTwo instanceof Monster) {
             damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
         } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Spell){
