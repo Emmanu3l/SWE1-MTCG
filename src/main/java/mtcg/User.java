@@ -19,6 +19,54 @@ public class User {
         this.stack = stack;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
+    }
+
+    public ArrayList<Card> getStack() {
+        return stack;
+    }
+
+    public void setStack(ArrayList<Card> stack) {
+        this.stack = stack;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public int getElo() {
+        return elo;
+    }
+
+    public void setElo(int elo) {
+        this.elo = elo;
+    }
+
     public void acquirePackages() {
         if (coins >= 4) {
             coins-=40;

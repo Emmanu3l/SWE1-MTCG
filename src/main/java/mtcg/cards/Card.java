@@ -3,12 +3,12 @@ package main.java.mtcg.cards;
 public abstract class Card {
     private String name;
     private int dmg;
-    private String elementType;
+    private ElementType element;
 
-    public Card(String name, int dmg, String elementType) {
+    public Card(String name, int dmg, ElementType element) {
         this.name = name;
         this.dmg = dmg;
-        this.elementType = elementType;
+        this.element = element;
     }
 
     public String getName() {
@@ -27,11 +27,11 @@ public abstract class Card {
         this.dmg = dmg;
     }
 
-    public String getElementType() {
-        return elementType;
+    public ElementType getElement() {
+        return element;
     }
 
-    public void setElementType(String elementType) {
-        this.elementType = elementType;
+    public void setElement(ElementType element) {
+        this.element = element;
     }
 }
