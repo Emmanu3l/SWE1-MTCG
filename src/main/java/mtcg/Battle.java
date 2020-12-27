@@ -1,7 +1,7 @@
 package main.java.mtcg;
 
 import main.java.mtcg.cards.Card;
-import main.java.mtcg.cards.ElementType;
+import main.java.mtcg.cards.Element;
 import main.java.mtcg.cards.Monster;
 import main.java.mtcg.cards.Spell;
 
@@ -39,17 +39,17 @@ public class Battle {
             if (randomCardOne.getElement() == randomCardOne.getElement()) {
                 //if they both have the same element type, no matter which one, the damage will not be changed
                 damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
-            } else if (randomCardOne.getElement() == ElementType.WATER && randomCardOne.getElement() == ElementType.FIRE) {
+            } else if (randomCardOne.getElement() == Element.WATER && randomCardOne.getElement() == Element.FIRE) {
                 damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
-            } else if (randomCardOne.getElement() == ElementType.FIRE && randomCardOne.getElement() == ElementType.WATER) {
+            } else if (randomCardOne.getElement() == Element.FIRE && randomCardOne.getElement() == Element.WATER) {
                 damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
-            } else if (randomCardOne.getElement() == ElementType.FIRE && randomCardOne.getElement() == ElementType.NORMAL) {
+            } else if (randomCardOne.getElement() == Element.FIRE && randomCardOne.getElement() == Element.NORMAL) {
                 damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
-            } else if (randomCardOne.getElement() == ElementType.NORMAL && randomCardOne.getElement() == ElementType.FIRE) {
+            } else if (randomCardOne.getElement() == Element.NORMAL && randomCardOne.getElement() == Element.FIRE) {
                 damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
-            } else if (randomCardOne.getElement() == ElementType.NORMAL && randomCardOne.getElement() == ElementType.WATER) {
+            } else if (randomCardOne.getElement() == Element.NORMAL && randomCardOne.getElement() == Element.WATER) {
                 damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
-            } else if (randomCardOne.getElement() == ElementType.WATER && randomCardOne.getElement() == ElementType.NORMAL) {
+            } else if (randomCardOne.getElement() == Element.WATER && randomCardOne.getElement() == Element.NORMAL) {
                 damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
             }
         }

@@ -1,5 +1,5 @@
 package main.java.mtcg.cards;
 
-public enum ElementType {
+public enum Element {
     WATER, NORMAL, FIRE
 }
