@@ -8,4 +8,12 @@ public class Monster extends Card implements Attackable {
         super(name, dmg, element);
         this.race = race;
     }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
 }
