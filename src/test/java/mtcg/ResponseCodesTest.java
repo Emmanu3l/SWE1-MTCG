@@ -1,7 +1,7 @@
 package test.java.mtcg;
 
-import main.java.webservicehandler.RequestContext;
-import main.java.webservicehandler.ResponseCodes;
+import main.java.mtcg.RequestContext;
+import main.java.mtcg.ResponseCodes;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
