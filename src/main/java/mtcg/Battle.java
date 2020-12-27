@@ -12,6 +12,7 @@ public class Battle {
     //TODO: need to parse type and race from curl input so i can get those in my game logic method
     //TODO: need to implement "game mechanics" (users can login, register, acquire cards, define a deck, battle, and compare stats in score board)
     //TODO: trading deals
+    //TODO: unique feature (idee: "intrinsic motivation" oder "pride" - monster gewinnen in round 1 immer gegen spells)
     public static void main(String[] args) {
         //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
