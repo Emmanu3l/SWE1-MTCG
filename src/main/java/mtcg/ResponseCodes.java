@@ -1,6 +1,6 @@
 package main.java.mtcg;
 
-import main.java.webservicehandler.RequestContext;
+import main.java.mtcg.RequestContext;
 
 import java.util.Dictionary;
 

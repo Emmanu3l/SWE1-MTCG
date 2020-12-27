@@ -1,7 +1,7 @@
 package main.java.mtcg;
 
-import main.java.webservicehandler.RequestContext;
-import main.java.webservicehandler.ResponseCodes;
+import main.java.mtcg.RequestContext;
+import main.java.mtcg.ResponseCodes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,9 +24,9 @@ public class Server implements Runnable {
     //for persistent storage, fields are needed
     private final Socket s;
     //list that is available to all threads
-    private main.java.webservicehandler.RequestContext requestContext;
+    private main.java.mtcg.RequestContext requestContext;
     private Dictionary<Integer, String> messages;
-    public Server(Socket s, main.java.webservicehandler.RequestContext requestContext, Dictionary<Integer, String> messages) {
+    public Server(Socket s, main.java.mtcg.RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
         this.requestContext = requestContext;
         //TODO: messages: dictionary, hashmap, treemap um message ID beizubehalten
@@ -35,7 +35,7 @@ public class Server implements Runnable {
     public static void main(String[] args) throws IOException {
         try {
             ServerSocket listener = new ServerSocket(10001);
-            main.java.webservicehandler.RequestContext requestContext = new RequestContext();
+            main.java.mtcg.RequestContext requestContext = new RequestContext();
             Dictionary<Integer, String> messages = new Hashtable<>();
             messages.put(1, "Hallo,");
             messages.put(2, " ich");
