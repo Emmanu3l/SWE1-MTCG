@@ -34,7 +34,7 @@ public class Server implements Runnable {
     }
     public static void main(String[] args) throws IOException {
         try {
-            ServerSocket listener = new ServerSocket(8000);
+            ServerSocket listener = new ServerSocket(10001);
             main.java.webservicehandler.RequestContext requestContext = new RequestContext();
             Dictionary<Integer, String> messages = new Hashtable<>();
             messages.put(1, "Hallo,");

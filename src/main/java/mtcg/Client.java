@@ -5,7 +5,7 @@ import java.net.Socket;
 public class Client {
     public static void main(String[] args) {
         try {
-            Socket socket = new Socket("localhost", 8000);
+            Socket socket = new Socket("localhost", 10001);
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             out.write("PUT /messages/3 HTTP/1.1\r\n");
             out.write("User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\n");
