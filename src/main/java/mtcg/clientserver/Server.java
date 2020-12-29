@@ -21,8 +21,8 @@ public class Server implements Runnable {
     //for persistent storage, fields are needed
     private final Socket s;
     //list that is available to all threads
-    private RequestContext requestContext;
-    private Dictionary<Integer, String> messages;
+    private final RequestContext requestContext;
+    private final Dictionary<Integer, String> messages;
     public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
         this.requestContext = requestContext;
@@ -61,7 +61,7 @@ public class Server implements Runnable {
             out = new PrintWriter(s.getOutputStream(), true);
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
-            String response = ResponseCodes.generateResponse(requestContext, messages);
+            String response = this.requestContext.generateResponse(requestContext, messages);
             out.println(response); //TODO: doesn't get printed? check whether it gets stuck at body or whether this actually doesn't print
             //out.println(messages);
             out.flush();
