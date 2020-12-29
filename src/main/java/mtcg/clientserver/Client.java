@@ -1,4 +1,4 @@
-package main.java.mtcg;
+package main.java.mtcg.clientserver;
 import java.io.*;
 import java.net.Socket;
 

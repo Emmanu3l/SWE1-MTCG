@@ -7,10 +7,14 @@ import java.util.ArrayList;
 public class User {
     private String username;
     private String password;
+    //the deck is used in the battles against other players.
     private ArrayList<Card> deck;
+    //a user has multiple cards in his stack.
+    //a stack is the collection of all his current cards (hint: cards can be removed by trading).
     private ArrayList<Card> stack;
     private int coins = 20;
     private int elo = 100;
+    private int gamesPlayed = 0;
 
     public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
         this.username = username;
@@ -67,9 +71,17 @@ public class User {
         this.elo = elo;
     }
 
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
+
     public void acquirePackages() {
         if (coins >= 4) {
-            coins-=40;
+            coins-=5;
             //add a package
         }
     }

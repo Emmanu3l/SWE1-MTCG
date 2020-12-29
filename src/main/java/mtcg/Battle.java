@@ -8,12 +8,14 @@ public class Battle {
     private static User battlerOne;
     private static User battlerTwo;
 
+    //a battle is a request to the server to compete against another user with your currently defined deck.
 
     //TODO: need to parse type and race from curl input so i can get those in my game logic method
     //TODO: need to implement "game mechanics" (users can login, register, acquire cards, define a deck, battle, and compare stats in score board)
     //TODO: trading deals
     //TODO: unique feature (idee: "intrinsic motivation" oder "pride" - monster gewinnen in round 1 immer gegen spells)
     //TODO: set git repository to PUBLIC after handing in the project
+    //TODO: trading deals
     public static void main(String[] args) {
         //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
@@ -89,7 +91,12 @@ public class Battle {
         return damageDealt;
     }
 
-    public static String generateOutput() {
+    public static String generateLog() {
+        return "";
+    }
+
+    public static String parseBattle() {
+        //interpret the request, get the Element and Race, etc.
         return "";
     }
 

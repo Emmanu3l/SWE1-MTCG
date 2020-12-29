@@ -1,6 +1,4 @@
-package main.java.mtcg;
-
-import main.java.mtcg.RequestContext;
+package main.java.mtcg.clientserver;
 
 import java.util.Dictionary;
 
@@ -19,6 +17,8 @@ public enum ResponseCodes {
         this.code = code;
         this.description = description;
     }
+
+    //TODO: retool this class to further handle the requests, as in: if it's a post request, see whether it's a login or Battle Request
 
     public int getCode() {
         return code;

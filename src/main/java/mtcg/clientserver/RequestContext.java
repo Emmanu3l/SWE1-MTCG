@@ -1,4 +1,4 @@
-package main.java.mtcg;
+package main.java.mtcg.clientserver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,28 +84,30 @@ public class RequestContext {
             System.out.println("readRequest: " + readRequest);
             readRequest = in.readLine();
         }
-        request = requestBuilder.toString();
-        String[] parsedRequest = request.trim().split("\r\n");
-        String[] requestLine = parsedRequest[0].trim().split(" ");
-        System.out.println("requestLine: "+ Arrays.toString(requestLine));
-        String verb = requestLine[0];
-        System.out.println("verb: " + verb);
-        String URI = requestLine[1];
-        System.out.println("URI: " + URI);
-        String version = requestLine[2];
-        System.out.println("version: " + version);
-        //parse header
-        //request line: verb, URI, Version
-        //optional request headers (name:value, ...)
-        //check for blank line, then call parseBody
-        //new line
-        //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
-        ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
-        System.out.println("headers: " + headers);
-        this.setVerb(verb);
-        this.setURI(URI);
-        this.setVersion(version);
-        this.setHeaders(headers);
+        if (readRequest != null) {
+            request = requestBuilder.toString();
+            String[] parsedRequest = request.trim().split("\r\n");
+            String[] requestLine = parsedRequest[0].trim().split(" ");
+            System.out.println("requestLine: "+ Arrays.toString(requestLine));
+            String verb = requestLine[0];
+            System.out.println("verb: " + verb);
+            String URI = requestLine[1];
+            System.out.println("URI: " + URI);
+            String version = requestLine[2];
+            System.out.println("version: " + version);
+            //parse header
+            //request line: verb, URI, Version
+            //optional request headers (name:value, ...)
+            //check for blank line, then call parseBody
+            //new line
+            //skip spaces and/or empty lines or avoid continuing if all that's left is whitespace
+            ArrayList<String> headers = new ArrayList<>(Arrays.asList(parsedRequest).subList(1, parsedRequest.length));
+            System.out.println("headers: " + headers);
+            this.setVerb(verb);
+            this.setURI(URI);
+            this.setVersion(version);
+            this.setHeaders(headers);
+        }
     }
 
     public void parseBody(BufferedReader in) throws IOException {
