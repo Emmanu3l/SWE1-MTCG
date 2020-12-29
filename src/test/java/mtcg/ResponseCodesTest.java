@@ -43,7 +43,7 @@ class ResponseCodesTest {
         RequestContext requestContext = new RequestContext("GET","/messages", "HTTP/1.1", headers,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + "<string xmlns=\"http://clearforest.com/\">string</string>\r\n");
         requestContext.parseRequest(in);
-        assertEquals("HTTP/1.1 200 (OK)\r\nHallo, ich bin eine Nachricht", requestContext.generateResponse(requestContext, messages));
+        assertEquals("HTTP/1.1 200 (OK)\r\nHallo, ich bin eine Nachricht", requestContext.generateResponse(messages));
     }
 
     @Test
@@ -71,7 +71,7 @@ class ResponseCodesTest {
         RequestContext requestContext = new RequestContext("GET","/messages", "HTTP/1.1", headers,
                 "keine");
         requestContext.parseRequest(in);
-        assertEquals("HTTP/1.1 200 (OK)\r\n[Hallo,,  ich,  bin, keine,  Nachricht]", requestContext.generateResponse(requestContext, messages) + "\r\n" + messages);
+        assertEquals("HTTP/1.1 200 (OK)\r\n[Hallo,,  ich,  bin, keine,  Nachricht]", requestContext.generateResponse(messages) + "\r\n" + messages);
     }
 
 }

@@ -1,11 +1,9 @@
 package main.java.mtcg.clientserver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -34,11 +32,11 @@ public class Server implements Runnable {
             ServerSocket listener = new ServerSocket(10001);
             RequestContext requestContext = new RequestContext();
             Dictionary<Integer, String> messages = new Hashtable<>();
-            messages.put(1, "Hallo,");
-            messages.put(2, " ich");
-            messages.put(3, " bin");
-            messages.put(4, " eine");
-            messages.put(5, " Nachricht");
+            messages.put(0, "Hallo,");
+            messages.put(1, " ich");
+            messages.put(2, " bin");
+            messages.put(3, " eine");
+            messages.put(4, " Nachricht");
             while (true) {
                 Socket socket = listener.accept();
                 Server server = new Server(socket, requestContext, messages);
@@ -55,17 +53,23 @@ public class Server implements Runnable {
     public void run() {
         BufferedReader in = null;
         PrintWriter out = null;
+        //BufferedOutputStream out = null;
         try {
-            //in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
-            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            out = new PrintWriter(s.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
+            //in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            //out = new PrintWriter(s.getOutputStream(), true);
+            out = new PrintWriter(s.getOutputStream(), true, StandardCharsets.UTF_8);
+            //out = new BufferedOutputStream(s.getOutputStream());
             this.requestContext.parseRequest(in);
+            //TODO: test the Server without parsing the body
             this.requestContext.parseBody(in);
             //TODO: there is something wrong with sending the response. Maybe the method needs more arguments?
-            String response = this.requestContext.generateResponse(this.requestContext, messages);
-            out.println(response); //TODO: doesn't get printed? check whether it gets stuck at body or whether this actually doesn't print
-            //out.println(messages);
+            String response = this.requestContext.generateResponse(messages);
+            //TODO: doesn't get printed? check whether it gets stuck at body or whether this actually doesn't print
+            //out.write(new String(response, StandardCharsets.UTF_8));
+            out.println(response);
             out.flush();
+            //out.println(messages);
         } catch (IOException e) {
             e.printStackTrace();
         }

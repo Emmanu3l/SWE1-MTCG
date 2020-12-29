@@ -25,63 +25,65 @@ public class RequestContext {
 
     }
 
-    public String generateResponse(RequestContext requestContext, Dictionary<Integer, String> messages) {
+    public String generateResponse(Dictionary<Integer, String> messages) {
         //TODO: TEST THE WEBSERVICE HANDLER
         //handle request and send appropriate response
         StringBuilder responseBuilder = new StringBuilder();
-        responseBuilder.append(requestContext.getVersion());
-        String messageID = requestContext.getMessageID();
-        if (requestContext.getVerb().equals("GET")) {
+        responseBuilder.append(getVersion());
+        String messageID = getMessageID();
+        if (getVerb().equals("GET")) {
             //retrieve information without modifying it
             //if found: 200 (OK)
             //along with response body (XML or JSON)
             //if not found: 404 (NOT FOUND)
             //syntax error: 400 (BAD REQUEST)
-            if (requestContext.getURI().equals("/messages")) {
+            //TODO: THE ERROR LIES HERE. MAKE SURE TO ACCOUNT FOR TRAILING SLASHES, AS IN: IT COULD BE "/messages" or "messages/"
+            //TODO: recommend procedure: remove all trailing slashes
+            if (getURI().equals("/messages")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 for (int i = 0; i < messages.size(); i++) {
                     responseBuilder.append(messages.get(i));
                 }
-            } else if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
+            } else if (messageID != null && getURI().equals("/messages" + messageID)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 responseBuilder.append(messages.get(Integer.parseInt(messageID) - 1));
             }
-        } else if (requestContext.getVerb().equals("POST")) {
+        } else if (getVerb().equals("POST")) {
             //create new resource
             //if created: 201 (Created) + entity which describes the status of the request
             //and refers to the new resource, and a location header
             //if resource can't be identified by a URI, either HTTP response code 200 (OK) or 204 (No Content)
-            if (requestContext.getURI().equals("/messages")) {
-                messages.put(messages.size(), requestContext.getBody());
+            if (getURI().equals("/messages")) {
+                messages.put(messages.size(), getBody());
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 //responseBuilder.append(messages.indexOf(requestContext.getBody()));
-                responseBuilder.append(messages.get(requestContext.getBody()));
+                responseBuilder.append(messages.get(getBody()));
             } else {
                 responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
             }
-        } else if (requestContext.getVerb().equals("PUT")) {
+        } else if (getVerb().equals("PUT")) {
             //update an existing resource
             //if it doesn't exist yet, decide between creating it or not (in my case it will not be created
             //to uphold the consistency of the request verbs)
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
-            if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
+            if (messageID != null && getURI().equals("/messages" + messageID)) {
                 if (messages.get(Integer.parseInt(messageID)) != null
                         && !messages.get(Integer.parseInt(messageID)).isEmpty()) {
-                    messages.put(Integer.parseInt(messageID), requestContext.getBody());
+                    messages.put(Integer.parseInt(messageID), getBody());
                     responseBuilder.append(ResponseCodes.OK.toString());
                     //responseBuilder.append(messages.indexOf(requestContext.getBody()));
-                } else if (requestContext.getBody() == null || requestContext.getBody().isEmpty()
-                        || requestContext.getBody().isBlank()) {
+                } else if (getBody() == null || getBody().isEmpty()
+                        || getBody().isBlank()) {
                     responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
                 }
             }
-        } else if (requestContext.getVerb().equals("DELETE")) {
+        } else if (getVerb().equals("DELETE")) {
             //delete resources identified by request URI
             //if successful and response includes entity describing status: 200 (OK)
             //if action has been queued: 202 (Accepted)
             //if action was performed but the response does not include an entity: 204 (No Content)
-            if (messageID != null && requestContext.getURI().equals("/messages/" + messageID)) {
+            if (messageID != null && getURI().equals("/messages" + messageID)) {
                 messages.remove(Integer.parseInt(messageID));
                 responseBuilder.append(ResponseCodes.OK.toString());
             } else {
@@ -90,6 +92,8 @@ public class RequestContext {
         } else {
             responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());
         }
+        //TODO:something went wrong here... check with println
+        //System.out.println("RESPONSE " + responseBuilder.toString());
         return responseBuilder.toString().trim();
     }
 
@@ -135,7 +139,7 @@ public class RequestContext {
 
     public String getMessageID() {
         String messageID;
-        String[] extractID = this.getURI().split("/");
+        String[] extractID = URI.split("/");
         if (extractID.length == 3) {
             messageID = extractID[2];
         } else {
@@ -158,11 +162,11 @@ public class RequestContext {
             String[] parsedRequest = request.trim().split("\r\n");
             String[] requestLine = parsedRequest[0].trim().split(" ");
             System.out.println("requestLine: "+ Arrays.toString(requestLine));
-            String verb = requestLine[0];
+            String verb = requestLine[0].trim();
             System.out.println("verb: " + verb);
-            String URI = requestLine[1];
+            String URI = requestLine[1].trim();
             System.out.println("URI: " + URI);
-            String version = requestLine[2];
+            String version = requestLine[2].trim();
             System.out.println("version: " + version);
             //parse header
             //request line: verb, URI, Version
