@@ -69,6 +69,10 @@ public class Server implements Runnable {
             //out.write(new String(response, StandardCharsets.UTF_8));
             out.println(response);
             out.flush();
+            //TODO: close server after giving response
+            in.close();
+            out.close();
+            s.close();
             //out.println(messages);
         } catch (IOException e) {
             e.printStackTrace();
