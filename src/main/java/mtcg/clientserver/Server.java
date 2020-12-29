@@ -61,7 +61,8 @@ public class Server implements Runnable {
             out = new PrintWriter(s.getOutputStream(), true);
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
-            String response = this.requestContext.generateResponse(requestContext, messages);
+            //TODO: there is something wrong with sending the response. Maybe the method needs more arguments?
+            String response = this.requestContext.generateResponse(this.requestContext, messages);
             out.println(response); //TODO: doesn't get printed? check whether it gets stuck at body or whether this actually doesn't print
             //out.println(messages);
             out.flush();
