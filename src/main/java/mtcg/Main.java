@@ -11,5 +11,6 @@ public class Main {
         ArrayList<Card> stack = new ArrayList<>();
         Monster card = new Monster("Leeroy Jenkins", 6, "paladin");
         User user = new User("Ben Schulz", "letsdothis", deck, stack);*/
+        //TODO: move the stuff from Server.java here, retire Client.java. This should be the only class with a main method
     }
 }

@@ -6,9 +6,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -38,11 +36,13 @@ public class Server implements Runnable {
             ServerSocket listener = new ServerSocket(10001);
             RequestContext requestContext = new RequestContext();
             Dictionary<Integer, String> messages = new Hashtable<>();
+            /*
             messages.put(0, "Hallo,");
             messages.put(1, " ich");
             messages.put(2, " bin");
             messages.put(3, " eine");
             messages.put(4, " Nachricht");
+             */
             while (true) {
                 Socket socket = listener.accept();
                 Server server = new Server(socket, requestContext, messages);
@@ -90,12 +90,26 @@ public class Server implements Runnable {
     }
 
     //TODO: write the appropriate SQL statements and insert them
-    public void register(User user) {
-
+    public void register(User user) throws SQLException {
+        //TODO: introduce id as primary key to allow duplicate usernames? I'll just use the username as a pk for now
+        //interesting sources:
+        //https://alvinalexander.com/java/java-mysql-insert-example-preparedstatement/
+        //https://www.javatpoint.com/PreparedStatement-interface
+        //https://www.sqlshack.com/learn-sql-naming-conventions/
+        //https://stackoverflow.com/questions/36258247/java-prepared-statements-for-postgresql
+        //if you try to view the sql operations through the lens of CRUD, sign up would correspond to create which in turn corresponds to insert
+        //TODO: use datagrip https://www.jetbrains.com/datagrip/features/generation.html
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into user (username, password) values (?, ?)");
+        preparedStatement.setString(1, user.getUsername());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.execute();
     }
 
-    public void login(User user) {
-
+    public boolean login(User user) throws SQLException {
+        //through the lens of CRUD, login corresponds to READ which in turn corresponds to SELECT
+        PreparedStatement preparedStatement = connection.prepareStatement("select username, password from user where username = ? and password = ?");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet.getString(1).equals(user.getUsername()) && resultSet.getString(2).equals(user.getPassword());
     }
 
 }

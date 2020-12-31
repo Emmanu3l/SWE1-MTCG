@@ -31,6 +31,7 @@ public class User {
         this.username = username;
     }
 
+    //TODO: is it really best practice to have a getPassword() method? (probably not)
     public String getPassword() {
         return password;
     }
