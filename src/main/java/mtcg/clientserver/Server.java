@@ -6,13 +6,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 //TODO: mehr objektorientierung
 //TODO: branches
-//TODO: connect to postman or insomnia via https://localhost:10001/
-//TODO: add user management methods
 //interesting resources:
 //https://en.wikipedia.org/wiki/HTTP_location
 //https://restfulapi.net/http-methods
@@ -24,10 +23,12 @@ public class Server implements Runnable {
     //list that is available to all threads
     private final RequestContext requestContext;
     private final Dictionary<Integer, String> messages;
+    //connection for sql
+    private Connection connection;
+
     public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
         this.requestContext = requestContext;
-        //TODO: messages: dictionary, hashmap, treemap um message ID beizubehalten
         this.messages = messages;
     }
     public static void main(String[] args) throws IOException {
@@ -64,15 +65,11 @@ public class Server implements Runnable {
             out = new PrintWriter(s.getOutputStream(), true, StandardCharsets.UTF_8);
             //out = new BufferedOutputStream(s.getOutputStream());
             this.requestContext.parseRequest(in);
-            //TODO: test the Server without parsing the body
             this.requestContext.parseBody(in);
-            //TODO: there is something wrong with sending the response. Maybe the method needs more arguments?
             String response = this.requestContext.generateResponse(messages);
-            //TODO: doesn't get printed? check whether it gets stuck at body or whether this actually doesn't print
             //out.write(new String(response, StandardCharsets.UTF_8));
             out.println(response);
             out.flush();
-            //TODO: close server after giving response
             in.close();
             out.close();
             s.close();

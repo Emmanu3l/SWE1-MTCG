@@ -2,6 +2,10 @@
 **Link to my git repository:**
 https://github.com/Emmanu3l/SWE1-MTCG
 
+**Reasons for choosing the respective collection types:**
+
+
+
 **Protocol:**
 
 Oct 13. 2020:
@@ -44,5 +48,9 @@ I changed a lot of small things about the Client Server part, but it turns out t
 issue was that I did not accomodate for trailing slashes.
 ~6 hours a day
 
-30 -:
+Dec 30:
 Continuing to work on the actual mtcg part of the project.
+~2 hours
+
+Dec 31:
+Adding PostgreSQL. Considering whether to use JetBrains DataGrip.
