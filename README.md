@@ -34,5 +34,15 @@ I decided to carry on with the mtcg part of the project before revisiting these 
 which seemed to be mostly encoding related.
 ~5 hours
 
-Dec 26 -:
+Dec 26 - 27:
 Continued working on the mtcg project.
+~5 hours a day
+
+Dec 28 - 29:
+Finally fix the errors when sending an HTTP request over Insomnia.
+I changed a lot of small things about the Client Server part, but it turns out the main
+issue was that I did not accomodate for trailing slashes.
+~6 hours a day
+
+30 -:
+Continuing to work on the actual mtcg part of the project.

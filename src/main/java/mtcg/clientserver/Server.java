@@ -1,5 +1,7 @@
 package main.java.mtcg.clientserver;
 
+import main.java.mtcg.User;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +12,7 @@ import java.util.Hashtable;
 //TODO: mehr objektorientierung
 //TODO: branches
 //TODO: connect to postman or insomnia via https://localhost:10001/
+//TODO: add user management methods
 //interesting resources:
 //https://en.wikipedia.org/wiki/HTTP_location
 //https://restfulapi.net/http-methods
@@ -78,4 +81,13 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
+
+    public void register(User user) {
+
+    }
+
+    public void login(User user) {
+
+    }
+
 }
