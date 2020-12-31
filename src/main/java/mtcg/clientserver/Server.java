@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -77,6 +79,14 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void connect() {
+        //this.connection = DriverManager.getConnection();
+    }
+
+    public void disconnect() throws SQLException {
+        this.connection.close();
     }
 
     public void register(User user) {
