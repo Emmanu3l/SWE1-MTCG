@@ -67,7 +67,7 @@ public class RequestContext {
             //to uphold the consistency of the request verbs)
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
-            if (messageID != null && getURI().equals("/messages" + messageID)) {
+            if (messageID != null && getURI().equals("/messages/" + messageID)) {
                 if (messages.get(Integer.parseInt(messageID)) != null
                         && !messages.get(Integer.parseInt(messageID)).isEmpty()) {
                     messages.put(Integer.parseInt(messageID), getBody());
@@ -83,7 +83,7 @@ public class RequestContext {
             //if successful and response includes entity describing status: 200 (OK)
             //if action has been queued: 202 (Accepted)
             //if action was performed but the response does not include an entity: 204 (No Content)
-            if (messageID != null && getURI().equals("/messages" + messageID)) {
+            if (messageID != null && getURI().equals("/messages/" + messageID)) {
                 messages.remove(Integer.parseInt(messageID));
                 responseBuilder.append(ResponseCodes.OK.toString());
             } else {

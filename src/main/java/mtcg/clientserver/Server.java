@@ -81,14 +81,15 @@ public class Server implements Runnable {
         }
     }
 
-    public void connect() {
-        //this.connection = DriverManager.getConnection();
+    public void connect(String url, User user) throws SQLException {
+        this.connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
     }
 
     public void disconnect() throws SQLException {
         this.connection.close();
     }
 
+    //TODO: write the appropriate SQL statements and insert them
     public void register(User user) {
 
     }
