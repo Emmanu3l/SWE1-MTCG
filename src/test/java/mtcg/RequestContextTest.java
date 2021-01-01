@@ -1,4 +1,4 @@
-package test.java.mtcg;
+package mtcg;
 
 import main.java.mtcg.clientserver.RequestContext;
 import org.junit.jupiter.api.Test;

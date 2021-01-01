@@ -1,6 +1,9 @@
 package main.java.mtcg.clientserver;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import main.java.mtcg.User;
+import main.java.mtcg.Battle;
+import main.java.mtcg.clientserver.RequestContext;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 //TODO: mehr objektorientierung
 //TODO: branches
@@ -33,30 +37,6 @@ public class Server implements Runnable {
         this.s = s;
         this.requestContext = requestContext;
         this.messages = messages;
-    }
-    public static void main(String[] args) throws IOException {
-        try {
-            ServerSocket listener = new ServerSocket(10001);
-            RequestContext requestContext = new RequestContext();
-            Dictionary<Integer, String> messages = new Hashtable<>();
-            /*
-            messages.put(0, "Hallo,");
-            messages.put(1, " ich");
-            messages.put(2, " bin");
-            messages.put(3, " eine");
-            messages.put(4, " Nachricht");
-             */
-            while (true) {
-                Socket socket = listener.accept();
-                Server server = new Server(socket, requestContext, messages);
-                Thread thread = new Thread(server);
-                //start() as opposed to run(), since run() is the equivalent of copy+pasting the code in main()
-                //instead of creating a thread
-                thread.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     @Override
     public void run() {
@@ -117,10 +97,14 @@ public class Server implements Runnable {
     }
 
     //TODO: if content type is JSON, get the body and use an objectmapper to convert to an object
+    //TODO: maybe just parse JSON first and then figure out what to do with it?
     //https://www.baeldung.com/jackson-object-mapper-tutorial
-    public Object parseJSON(String s) {
-        //Object o = objectMapper.readValue(s, Object.class);
-        return null;
+    public Object parseUser(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, User.class);
+    }
+
+    public Battle parseBattle(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, Battle.class);
     }
 
 }
