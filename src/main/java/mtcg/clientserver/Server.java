@@ -12,11 +12,14 @@ import java.util.Hashtable;
 
 //TODO: mehr objektorientierung
 //TODO: branches
+//TODO: use jackson, siehe moodle: deserialize JSON string into Java objects - JSON to Java Object
 //interesting resources:
 //https://en.wikipedia.org/wiki/HTTP_location
 //https://restfulapi.net/http-methods
 //https://learnxinyminutes.com/docs/java/
 //https://restfulapi.net/http-status-codes/
+//look up more information about "java multi threaded tcp server" to make sure you're doing it correctly
+
 public class Server implements Runnable {
     //for persistent storage, fields are needed
     private final Socket s;
@@ -93,6 +96,7 @@ public class Server implements Runnable {
     public void register(User user) throws SQLException {
         //TODO: introduce id as primary key to allow duplicate usernames? I'll just use the username as a pk for now
         //interesting sources:
+        //https://www.tutorialspoint.com/postgresql/postgresql_environment.htm
         //https://alvinalexander.com/java/java-mysql-insert-example-preparedstatement/
         //https://www.javatpoint.com/PreparedStatement-interface
         //https://www.sqlshack.com/learn-sql-naming-conventions/
@@ -110,6 +114,13 @@ public class Server implements Runnable {
         PreparedStatement preparedStatement = connection.prepareStatement("select username, password from user where username = ? and password = ?");
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet.getString(1).equals(user.getUsername()) && resultSet.getString(2).equals(user.getPassword());
+    }
+
+    //TODO: if content type is JSON, get the body and use an objectmapper to convert to an object
+    //https://www.baeldung.com/jackson-object-mapper-tutorial
+    public Object parseJSON(String s) {
+        //Object o = objectMapper.readValue(s, Object.class);
+        return null;
     }
 
 }

@@ -16,6 +16,7 @@ public class Battle {
     //TODO: unique feature (idee: "intrinsic motivation" oder "pride" - monster gewinnen in round 1 immer gegen spells)
     //TODO: set git repository to PUBLIC after handing in the project
     //TODO: trading deals
+    //TODO: focus on parsing the requests, take a closer look at the curl script
     public static void main(String[] args) {
         //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
