@@ -3,6 +3,9 @@ package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.java.mtcg.User;
 import main.java.mtcg.Battle;
+import main.java.mtcg.cards.Card;
+import main.java.mtcg.cards.Monster;
+import main.java.mtcg.cards.Spell;
 import main.java.mtcg.clientserver.RequestContext;
 
 import java.io.*;
@@ -110,6 +113,14 @@ public class Server implements Runnable {
     public static String convertUser(User u) throws JsonProcessingException {
         //TODO: find out how to only print username and password
         return new ObjectMapper().writeValueAsString(u);
+    }
+
+    public static Monster parseMonster(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s.toLowerCase(Locale.ROOT), Monster.class);
+    }
+
+    public static Spell parseSpell(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s.toLowerCase(Locale.ROOT), Spell.class);
     }
 
     public Battle parseBattle(String s) throws JsonProcessingException {

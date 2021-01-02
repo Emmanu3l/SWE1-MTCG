@@ -23,7 +23,7 @@ public class Battle {
             // each battler draws one card each
             Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
             Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
-            int damageDealt = gameLogic(randomCardOne, randomCardTwo);
+            double damageDealt = gameLogic(randomCardOne, randomCardTwo);
 
         }
         //if it is a draw, the elo stays unchanged
@@ -31,8 +31,8 @@ public class Battle {
     }
 
     //create GameResult Class which contains damage dealt by both Cards and the winner?
-    public static int gameLogic(Card randomCardOne, Card randomCardTwo) {
-        int damageDealt = 0;
+    public static double gameLogic(Card randomCardOne, Card randomCardTwo) {
+        double damageDealt = 0;
         //Monster Fight
         if (randomCardOne instanceof Monster && randomCardTwo instanceof Monster) {
             //specialties

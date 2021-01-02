@@ -3,16 +3,16 @@ package main.java.mtcg.cards;
 public abstract class Card {
     private String id;
     private String name;
-    private int damage;
+    private double damage;
     private Element element;
 
-    public Card(String id, String name, int damage) {
+    public Card(String id, String name, double damage) {
         this.id = id;
         this.name = name;
         this.damage = damage;
     }
 
-    public Card(String id, String name, int damage, Element element) {
+    public Card(String id, String name, double damage, Element element) {
         this.id = id;
         this.name = name;
         this.damage = damage;
@@ -35,7 +35,7 @@ public abstract class Card {
         this.name = name;
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 

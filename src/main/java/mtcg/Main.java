@@ -43,7 +43,8 @@ public class Main {
         User user1 = new User("kienboec", "daniel");
         User user2 = Server.parseUser("{\"Username\":\"kienboec\", \"Password\":\"daniel\"}");
         System.out.println(user1.equals(user2));
-        System.out.println(user1.hashCode());
+        Card card1 = new Monster("845f0dc7-37d0-426e-994e-43fc3ac83c08", "WaterGoblin", 10.0);
+        Card card2 = Server.parseMonster("{\"Id\":\"845f0dc7-37d0-426e-994e-43fc3ac83c08\", \"Name\":\"WaterGoblin\", \"Damage\": 10.0}");
     }
 
 }
