@@ -3,18 +3,14 @@ package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.java.mtcg.User;
 import main.java.mtcg.Battle;
-import main.java.mtcg.cards.Card;
 import main.java.mtcg.cards.Monster;
 import main.java.mtcg.cards.Spell;
-import main.java.mtcg.clientserver.RequestContext;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.Locale;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +32,7 @@ public class Server implements Runnable {
     private final RequestContext requestContext;
     private final Dictionary<Integer, String> messages;
     //connection for sql
-    private Connection connection;
+    private static Connection connection;
 
     public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
@@ -56,7 +52,7 @@ public class Server implements Runnable {
             //out = new BufferedOutputStream(s.getOutputStream());
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
-            String response = this.requestContext.generateResponse(messages);
+            String response = this.requestContext.handleRequest(messages);
             //out.write(new String(response, StandardCharsets.UTF_8));
             out.println(response);
             out.flush();
@@ -64,21 +60,21 @@ public class Server implements Runnable {
             out.close();
             s.close();
             //out.println(messages);
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void connect(String url, User user) throws SQLException {
-        this.connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
+        connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
     }
 
     public void disconnect() throws SQLException {
-        this.connection.close();
+        connection.close();
     }
 
     //TODO: write the appropriate SQL statements and insert them
-    public void register(User user) throws SQLException {
+    public static void register(User user) throws SQLException {
         //TODO: introduce id as primary key to allow duplicate usernames? I'll just use the username as a pk for now.
         //TODO: update - it seems like there is not point in adding a userid, since the username and password have to be checked anyway
         //interesting sources:

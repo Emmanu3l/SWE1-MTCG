@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -18,7 +19,7 @@ class ResponseCodesTest {
     //TODO: add generateResponse Test for POST and DELETE
 
     @Test
-    void generateResponse1() throws IOException {
+    void generateResponse1() throws IOException, SQLException {
         Dictionary<Integer, String> messages = new Hashtable<>();
         messages.put(1, "Hallo,");
         messages.put(2, " ich");
@@ -43,11 +44,11 @@ class ResponseCodesTest {
         RequestContext requestContext = new RequestContext("GET","/messages", "HTTP/1.1", headers,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + "<string xmlns=\"http://clearforest.com/\">string</string>\r\n");
         requestContext.parseRequest(in);
-        assertEquals("HTTP/1.1 200 (OK)\r\nHallo, ich bin eine Nachricht", requestContext.generateResponse(messages));
+        assertEquals("HTTP/1.1 200 (OK)\r\nHallo, ich bin eine Nachricht", requestContext.handleRequest(messages));
     }
 
     @Test
-    void generateResponse2() throws IOException {
+    void generateResponse2() throws IOException, SQLException {
         Dictionary<Integer, String> messages = new Hashtable<>();
         messages.put(1, "Hallo,");
         messages.put(2, " ich");
@@ -71,7 +72,7 @@ class ResponseCodesTest {
         RequestContext requestContext = new RequestContext("GET","/messages", "HTTP/1.1", headers,
                 "keine");
         requestContext.parseRequest(in);
-        assertEquals("HTTP/1.1 200 (OK)\r\n[Hallo,,  ich,  bin, keine,  Nachricht]", requestContext.generateResponse(messages) + "\r\n" + messages);
+        assertEquals("HTTP/1.1 200 (OK)\r\n[Hallo,,  ich,  bin, keine,  Nachricht]", requestContext.handleRequest(messages) + "\r\n" + messages);
     }
 
 }
