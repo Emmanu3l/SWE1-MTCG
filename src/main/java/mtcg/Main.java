@@ -43,6 +43,7 @@ public class Main {
         User user1 = new User("kienboec", "daniel");
         User user2 = Server.parseUser("{\"Username\":\"kienboec\", \"Password\":\"daniel\"}");
         System.out.println(user1.equals(user2));
+        System.out.println(user1.hashCode());
     }
 
 }

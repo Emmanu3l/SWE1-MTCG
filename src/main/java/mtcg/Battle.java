@@ -38,55 +38,55 @@ public class Battle {
             //specialties
             if (((Monster) randomCardOne).getRace() == Race.GOBLIN && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
                 //Goblins are too afraid of Dragons to attack.
-                damageDealt = -randomCardTwo.getDmg();
+                damageDealt = -randomCardTwo.getDamage();
             } else if (((Monster) randomCardOne).getRace() == Race.WIZZARD && ((Monster) randomCardTwo).getRace() == Race.ORK) {
                 //Wizzard can control Orks so they are not able to damage them.
-                damageDealt = randomCardOne.getDmg();
+                damageDealt = randomCardOne.getDamage();
             } else if (((Monster) randomCardOne).getRace() == Race.ELF && randomCardOne.getElement() == Element.FIRE && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
                 //The FireElves know Dragons since they were little and can evade their attacks.
-                damageDealt = randomCardOne.getDmg();
+                damageDealt = randomCardOne.getDamage();
             } else {
                 //by default, element types are irrelevant for Monster Battles
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Spell Fight
         } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Spell) {
             if (randomCardOne.getElement() == Element.WATER && randomCardOne.getElement() == Element.FIRE) {
-                damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() * 2 - randomCardTwo.getDamage();
             } else if (randomCardOne.getElement() == Element.FIRE && randomCardOne.getElement() == Element.WATER) {
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage() * 2;
             } else if (randomCardOne.getElement() == Element.FIRE && randomCardOne.getElement() == Element.NORMAL) {
-                damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() * 2 - randomCardTwo.getDamage();
             } else if (randomCardOne.getElement() == Element.NORMAL && randomCardOne.getElement() == Element.FIRE) {
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage() * 2;
             } else if (randomCardOne.getElement() == Element.NORMAL && randomCardOne.getElement() == Element.WATER) {
-                damageDealt = randomCardOne.getDmg() * 2 - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() * 2 - randomCardTwo.getDamage();
             } else if (randomCardOne.getElement() == Element.WATER && randomCardOne.getElement() == Element.NORMAL) {
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg() * 2;
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage() * 2;
             } else {
                 //if they both have the same element type, no matter which one, the damage will not be changed
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Mixed Fight
         } else if (randomCardOne instanceof Monster && randomCardTwo instanceof Spell) {
             ///specialties
             if (((Monster) randomCardOne).getRace() == Race.KNIGHT && randomCardTwo.getElement() == Element.WATER) {
-                damageDealt = -randomCardTwo.getDmg();
+                damageDealt = -randomCardTwo.getDamage();
             } else if (((Monster) randomCardOne).getRace() == Race.KRAKEN) {
-                damageDealt = randomCardOne.getDmg();
+                damageDealt = randomCardOne.getDamage();
             } else {
                 //by default, the damage numbers are used as is
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Reverse Mixed Fight
         } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Monster) {
             if (randomCardOne.getElement() == Element.WATER && ((Monster) randomCardTwo).getRace() == Race.KNIGHT) {
-                damageDealt = randomCardOne.getDmg();
+                damageDealt = randomCardOne.getDamage();
             } else if (((Monster) randomCardTwo).getRace() == Race.KRAKEN) {
-                damageDealt = -randomCardTwo.getDmg();
+                damageDealt = -randomCardTwo.getDamage();
             } else {
                 //by default, the damage numbers are used as is
-                damageDealt = randomCardOne.getDmg() - randomCardTwo.getDmg();
+                damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
         }
         return damageDealt;

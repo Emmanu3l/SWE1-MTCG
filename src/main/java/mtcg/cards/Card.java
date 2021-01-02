@@ -1,14 +1,30 @@
 package main.java.mtcg.cards;
 
 public abstract class Card {
+    private String id;
     private String name;
-    private int dmg;
+    private int damage;
     private Element element;
 
-    public Card(String name, int dmg, Element element) {
+    public Card(String id, String name, int damage) {
+        this.id = id;
         this.name = name;
-        this.dmg = dmg;
+        this.damage = damage;
+    }
+
+    public Card(String id, String name, int damage, Element element) {
+        this.id = id;
+        this.name = name;
+        this.damage = damage;
         this.element = element;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -19,12 +35,12 @@ public abstract class Card {
         this.name = name;
     }
 
-    public int getDmg() {
-        return dmg;
+    public int getDamage() {
+        return damage;
     }
 
-    public void setDmg(int dmg) {
-        this.dmg = dmg;
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     public Element getElement() {
