@@ -29,6 +29,7 @@ public class RequestContext {
 
     }
 
+    //TODO: retire messageID
     //TODO: the purpose of this method could perhaps be more fittingly described with the name "handleRequest" instead of generateResponse
     public String handleRequest(Dictionary<Integer, String> messages) throws JsonProcessingException, SQLException {
         //TODO: TEST THE WEBSERVICE HANDLER
@@ -42,9 +43,9 @@ public class RequestContext {
             //along with response body (XML or JSON)
             //if not found: 404 (NOT FOUND)
             //syntax error: 400 (BAD REQUEST)
-            //TODO: THE ERROR LIES HERE. MAKE SURE TO ACCOUNT FOR TRAILING SLASHES, AS IN: IT COULD BE "/messages" or "messages/"
-            //TODO: recommend procedure: remove all trailing slashes
-            if (getURI().equals("/messages")) {
+            //TODO: THE ERROR LIES HERE. MAKE SURE TO ACCOUNT FOR TRAILING SLASHES, AS IN: IT COULD BE "/messages" or "/messages/"
+            //TODO: recommended procedure: remove all trailing slashes
+            /*if (getURI().equals("/messages")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 for (int i = 0; i < messages.size(); i++) {
                     responseBuilder.append(messages.get(i));
@@ -52,7 +53,28 @@ public class RequestContext {
             } else if (messageID != null && getURI().equals("/messages" + messageID)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 responseBuilder.append(messages.get(Integer.parseInt(messageID) - 1));
+            }*/
+            if (getURI().equals("/cards")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //output all cards that belong to a specific user
+                //...
+            } else if (getURI().equals("/deck")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
+            } else if (getURI().equals("/users" /* + /username */)) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
+            } else if (getURI().equals("/stats")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
+            } else if (getURI().equals("/score")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
+            } else if (getURI().equals("/deck")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
             }
+
         } else if (getVerb().equals("POST")) {
             //create new resource
             //if created: 201 (Created) + entity which describes the status of the request
@@ -65,6 +87,18 @@ public class RequestContext {
                 Server.register(user);
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
+            } else if (getURI().equals("/sessions")) {
+
+            } else if (getURI().equals("/packages")) {
+
+            } else if (getURI().equals("/transactions/packages")) {
+
+            } else if (getURI().equals("/tradings")) {
+
+            } else if (getURI().equals("/battles")) {
+
+            } else if (getURI().equals("/tradings" + "" /* + /id */)) {
+
             } else {
                 responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
             }
@@ -74,7 +108,7 @@ public class RequestContext {
             //to uphold the consistency of the request verbs)
             //if created: 201 (Created)
             //if modified: 200 (OK) or 204 (No Content)
-            if (messageID != null && getURI().equals("/messages/" + messageID)) {
+            /*if (messageID != null && getURI().equals("/messages/" + messageID)) {
                 if (messages.get(Integer.parseInt(messageID)) != null
                         && !messages.get(Integer.parseInt(messageID)).isEmpty()) {
                     messages.put(Integer.parseInt(messageID), getBody());
@@ -84,17 +118,30 @@ public class RequestContext {
                         || getBody().isBlank()) {
                     responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
                 }
+            }*/
+            if (getURI().equals("/deck")) {
+                    responseBuilder.append(ResponseCodes.OK.toString());
+                    //...
+
+            } else if (getURI().equals("/users" /* + /username */)) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
             }
+
         } else if (getVerb().equals("DELETE")) {
             //delete resources identified by request URI
             //if successful and response includes entity describing status: 200 (OK)
             //if action has been queued: 202 (Accepted)
             //if action was performed but the response does not include an entity: 204 (No Content)
-            if (messageID != null && getURI().equals("/messages/" + messageID)) {
+            /*if (messageID != null && getURI().equals("/messages/" + messageID)) {
                 messages.remove(Integer.parseInt(messageID));
                 responseBuilder.append(ResponseCodes.OK.toString());
             } else {
                 responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
+            }*/
+            if (getURI().equals("/tradings" /* + /id */)) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                //...
             }
         } else {
             responseBuilder.append(ResponseCodes.BAD_REQUEST.toString());

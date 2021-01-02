@@ -4,7 +4,7 @@ https://github.com/Emmanu3l/SWE1-MTCG
 
 **Reasons for choosing the respective collection types:**
 
-
+**Why these unit tests are chosen and why the tested code is critical:**
 
 **Protocol:**
 
