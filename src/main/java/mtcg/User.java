@@ -3,6 +3,7 @@ package main.java.mtcg;
 import main.java.mtcg.cards.Card;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class User {
     private String username;
@@ -127,5 +128,18 @@ public class User {
                 ", elo=" + elo +
                 ", gamesPlayed=" + gamesPlayed +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return coins == user.coins && elo == user.elo && gamesPlayed == user.gamesPlayed && username.equals(user.username) && password.equals(user.password) && Objects.equals(deck, user.deck) && Objects.equals(stack, user.stack);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, deck, stack, coins, elo, gamesPlayed);
     }
 }

@@ -40,10 +40,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        //User user = new User("kienboec", "daniel");
-        //System.out.println(new ObjectMapper().writeValueAsString(user));
-        User user = new ObjectMapper().readValue("{\"Username\":\"kienboec\", \"Password\":\"daniel\"}".toLowerCase(Locale.ROOT), User.class);
-        System.out.println(user);
+        User user1 = new User("kienboec", "daniel");
+        User user2 = Server.parseUser("{\"Username\":\"kienboec\", \"Password\":\"daniel\"}");
+        System.out.println(user1.equals(user2));
     }
 
 }
