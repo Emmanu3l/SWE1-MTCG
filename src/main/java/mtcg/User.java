@@ -16,6 +16,15 @@ public class User {
     private int elo = 100;
     private int gamesPlayed = 0;
 
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+
     public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
         this.username = username;
         this.password = password;
@@ -107,5 +116,16 @@ public class User {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", deck=" + deck +
+                ", stack=" + stack +
+                ", coins=" + coins +
+                ", elo=" + elo +
+                ", gamesPlayed=" + gamesPlayed +
+                '}';
+    }
 }
