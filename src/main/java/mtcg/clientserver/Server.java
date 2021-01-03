@@ -3,6 +3,8 @@ package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.java.mtcg.User;
 import main.java.mtcg.Battle;
+import main.java.mtcg.cards.Card;
+import main.java.mtcg.cards.Deck;
 import main.java.mtcg.cards.Monster;
 import main.java.mtcg.cards.Spell;
 
@@ -10,6 +12,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Locale;
 
@@ -121,6 +124,14 @@ public class Server implements Runnable {
 
     public Battle parseBattle(String s) throws JsonProcessingException {
         return new ObjectMapper().readValue(s, Battle.class);
+    }
+
+    public Package parsePackage(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, Package.class);
+    }
+
+    public Deck parseDeck(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, Deck.class);
     }
 
 }
