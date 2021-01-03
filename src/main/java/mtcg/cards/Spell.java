@@ -6,7 +6,7 @@ public class Spell extends Card {
         super(id, name, dmg);
     }
 
-    public Spell(String id, String name, double dmg, Element element) {
+    /*public Spell(String id, String name, double dmg, Element element) {
         super(id, name, dmg, element);
-    }
+    }*/
 }

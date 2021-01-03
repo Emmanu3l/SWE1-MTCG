@@ -3,12 +3,10 @@ package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.java.mtcg.User;
 import main.java.mtcg.Battle;
-import main.java.mtcg.cards.Card;
-import main.java.mtcg.cards.Deck;
-import main.java.mtcg.cards.Monster;
-import main.java.mtcg.cards.Spell;
+import main.java.mtcg.cards.*;
 
 import java.io.*;
+import java.lang.Package;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
@@ -126,7 +124,7 @@ public class Server implements Runnable {
         return new ObjectMapper().readValue(s, Battle.class);
     }
 
-    public Package parsePackage(String s) throws JsonProcessingException {
+    public static Package parsePackage(String s) throws JsonProcessingException {
         return new ObjectMapper().readValue(s, Package.class);
     }
 
@@ -135,3 +133,13 @@ public class Server implements Runnable {
     }
 
 }
+//TODO:
+//how does the deck actually work? after a user has acquired packages, they can build a deck from it
+//but when building a deck you only refer to the ids of the cards in the packages in your posession
+//so a deck building request is simply a list of package-card ids
+//so every time building a a deck is requested, you have to access the cards that a given user posesses
+//i could either do this by creating a list of cards which is simply all of the cards he posesses
+//and then removing them from the packages (get with id) and adding them to the decks
+//or i could add them to a database
+//for now, i will try implementing it without a database
+//postpone database stuff until the end since it is pretty much the only thing not required for the curl script to execute properly

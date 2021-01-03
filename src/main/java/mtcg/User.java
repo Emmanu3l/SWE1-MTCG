@@ -1,6 +1,7 @@
 package main.java.mtcg;
 
 import main.java.mtcg.cards.Card;
+import main.java.mtcg.cards.Deck;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -9,7 +10,8 @@ public class User {
     private String username;
     private String password;
     //the deck is used in the battles against other players.
-    private ArrayList<Card> deck;
+    //private ArrayList<Card> deck;
+    private Deck deck;
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
     private ArrayList<Card> stack;
@@ -26,7 +28,7 @@ public class User {
     }
 
 
-    public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
+    public User(String username, String password, Deck deck, ArrayList<Card> stack) {
         this.username = username;
         this.password = password;
         this.deck = deck;
@@ -50,11 +52,11 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Card> getDeck() {
+    public Deck getDeck() {
         return deck;
     }
 
-    public void setDeck(ArrayList<Card> deck) {
+    public void setDeck(Deck deck) {
         this.deck = deck;
     }
 

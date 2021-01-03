@@ -21,9 +21,10 @@ public class Battle {
         //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
             // each battler draws one card each
-            Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
-            Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
-            double damageDealt = gameLogic(randomCardOne, randomCardTwo);
+            //TODO: adjust the following three lines for the new deck datatype
+            //Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
+            //Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
+            //double damageDealt = gameLogic(randomCardOne, randomCardTwo);
 
         }
         //if it is a draw, the elo stays unchanged
