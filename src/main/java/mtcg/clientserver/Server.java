@@ -27,18 +27,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Server implements Runnable {
     //for persistent storage, fields are needed
-    private final Socket s;
+    private /*final */Socket s;
     //list that is available to all threads
-    private final RequestContext requestContext;
-    private final Dictionary<Integer, String> messages;
+    private /*final */RequestContext requestContext;
+    private /*final */Dictionary<Integer, String> messages;
     //connection for sql
-    private static Connection connection;
+    //private static Connection connection;
+    private Connection connection;
 
     public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
         this.s = s;
         this.requestContext = requestContext;
         this.messages = messages;
     }
+
+    public Server() {
+    }
+
     @Override
     public void run() {
         BufferedReader in = null;
@@ -66,7 +71,7 @@ public class Server implements Runnable {
     }
 
     public void connect(String url, User user) throws SQLException {
-        connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
+        this.connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
     }
 
     public void disconnect() throws SQLException {
@@ -74,7 +79,7 @@ public class Server implements Runnable {
     }
 
     //TODO: write the appropriate SQL statements and insert them
-    public static void register(User user) throws SQLException {
+    public /*static */void register(User user) throws SQLException {
         //TODO: introduce id as primary key to allow duplicate usernames? I'll just use the username as a pk for now.
         //TODO: update - it seems like there is not point in adding a userid, since the username and password have to be checked anyway
         //interesting sources:

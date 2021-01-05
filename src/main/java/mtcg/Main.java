@@ -7,18 +7,24 @@ import main.java.mtcg.cards.Monster;
 import main.java.mtcg.clientserver.RequestContext;
 import main.java.mtcg.clientserver.Server;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
+
+//TODO: the main difficulty now is how to save the users within the server and how to save the cards for every user, etc.
 
 public class Main {
     //TODO: this should be the only class with a main method
     //TODO: in case of any errors: file > invalidate caches/restart
     //TODO: consider removing the possibly redundant dependencies in pom.xml. For more info: https://www.baeldung.com/jackson-object-mapper-tutorial
     //interesting info: https://www.youtube.com/watch?v=GqkWFltAjhw
-    public static void main(String[] args) throws IOException {
-        try {
+    public static void main(String[] args) throws IOException, SQLException {
+        /*try {
             ServerSocket listener = new ServerSocket(10001);
             RequestContext requestContext = new RequestContext();
             Dictionary<Integer, String> messages = new Hashtable<>();
@@ -37,7 +43,12 @@ public class Main {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        Server server = new Server();
+        User user = new User("admin", "admin");
+        server.register(user);
+        server.connect("jdbc:postgresql://localhost:10001/postgres", user);
+
         /*User user1 = new User("kienboec", "daniel");
         User user2 = Server.parseUser("{\"Username\":\"kienboec\", \"Password\":\"daniel\"}");
         System.out.println(user1.equals(user2));

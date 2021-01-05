@@ -5,6 +5,7 @@ import main.java.mtcg.cards.Card;
 import main.java.mtcg.cards.Deck;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -17,7 +18,7 @@ public class User {
     private Deck deck;
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
-    private ArrayList<Card> stack;
+    private List<Card> stack;
     private int coins = 20;
     private int elo = 100;
     private int gamesPlayed = 0;
@@ -63,7 +64,7 @@ public class User {
         this.deck = deck;
     }
 
-    public ArrayList<Card> getStack() {
+    public List<Card> getStack() {
         return stack;
     }
 

@@ -81,7 +81,7 @@ public class RequestContext {
             //messages.put(messages.size(), getBody());
             if (getURI().equals("/users")) {
                 User user = Server.parseUser(getBody());
-                Server.register(user);
+                //Server.register(user);
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
             } else if (getURI().equals("/sessions")) {
