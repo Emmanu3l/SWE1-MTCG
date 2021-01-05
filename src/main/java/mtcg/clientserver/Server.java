@@ -35,13 +35,11 @@ public class Server implements Runnable {
     //private static Connection connection;
     private Connection connection;
 
-    public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages) {
+    public Server(Socket s, RequestContext requestContext, Dictionary<Integer, String> messages, Connection connection) {
         this.s = s;
         this.requestContext = requestContext;
         this.messages = messages;
-    }
-
-    public Server() {
+        this.connection = connection;
     }
 
     @Override
