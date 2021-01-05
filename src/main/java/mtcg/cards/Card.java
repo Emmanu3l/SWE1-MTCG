@@ -1,10 +1,16 @@
 package main.java.mtcg.cards;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Locale;
 import java.util.Objects;
 
-public abstract class Card {
+public class Card {
+    @JsonProperty("Id")
     private String id;
+    @JsonProperty("Name")
     private String name;
+    @JsonProperty("Damage")
     private double damage;
     //private Element element;
 
@@ -63,20 +69,33 @@ public abstract class Card {
 
     public Element getElement() {
         for (Element e: Element.values()) {
-            if (this.name.contains(e.toString())) {
+            if (this.name.toUpperCase(Locale.ROOT).contains(e.toString())) {
                 return e;
+            }
+        }
+        return Element.NORMAL;
+    }
+
+    public Race getRace() {
+        for (Race r: Race.values()) {
+            if (this.name.toUpperCase(Locale.ROOT).contains(r.toString())) {
+                return r;
             }
         }
         return null;
     }
 
-    public Race getRace() {
+    public boolean isMonster() {
         for (Race r: Race.values()) {
-            if (this.name.contains(r.toString())) {
-                return r;
+            if (this.name.toUpperCase(Locale.ROOT).contains(r.toString())) {
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    public boolean isSpell() {
+        return !isMonster();
     }
 
     /*public void setElement(Element element) {
@@ -91,4 +110,6 @@ public abstract class Card {
                 ", damage=" + damage +
                 '}';
     }
+
+
 }

@@ -35,15 +35,15 @@ public class Battle {
     public static double gameLogic(Card randomCardOne, Card randomCardTwo) {
         double damageDealt = 0;
         //Monster Fight
-        if (randomCardOne instanceof Monster && randomCardTwo instanceof Monster) {
+        if (randomCardOne.isMonster() && randomCardTwo.isMonster()) {
             //specialties
-            if (((Monster) randomCardOne).getRace() == Race.GOBLIN && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
+            if (randomCardOne.getRace() == Race.GOBLIN && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
                 //Goblins are too afraid of Dragons to attack.
                 damageDealt = -randomCardTwo.getDamage();
-            } else if (((Monster) randomCardOne).getRace() == Race.WIZZARD && ((Monster) randomCardTwo).getRace() == Race.ORK) {
+            } else if (randomCardOne.getRace() == Race.WIZZARD && ((Monster) randomCardTwo).getRace() == Race.ORK) {
                 //Wizzard can control Orks so they are not able to damage them.
                 damageDealt = randomCardOne.getDamage();
-            } else if (((Monster) randomCardOne).getRace() == Race.ELF && randomCardOne.getElement() == Element.FIRE && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
+            } else if (randomCardOne.getRace() == Race.ELF && randomCardOne.getElement() == Element.FIRE && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
                 //The FireElves know Dragons since they were little and can evade their attacks.
                 damageDealt = randomCardOne.getDamage();
             } else {
@@ -51,7 +51,7 @@ public class Battle {
                 damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Spell Fight
-        } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Spell) {
+        } else if (randomCardOne.isSpell() && randomCardTwo.isSpell()) {
             if (randomCardOne.getElement() == Element.WATER && randomCardOne.getElement() == Element.FIRE) {
                 damageDealt = randomCardOne.getDamage() * 2 - randomCardTwo.getDamage();
             } else if (randomCardOne.getElement() == Element.FIRE && randomCardOne.getElement() == Element.WATER) {
@@ -69,21 +69,21 @@ public class Battle {
                 damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Mixed Fight
-        } else if (randomCardOne instanceof Monster && randomCardTwo instanceof Spell) {
+        } else if (randomCardOne.isMonster() && randomCardTwo.isSpell()) {
             ///specialties
-            if (((Monster) randomCardOne).getRace() == Race.KNIGHT && randomCardTwo.getElement() == Element.WATER) {
+            if (randomCardOne.getRace() == Race.KNIGHT && randomCardTwo.getElement() == Element.WATER) {
                 damageDealt = -randomCardTwo.getDamage();
-            } else if (((Monster) randomCardOne).getRace() == Race.KRAKEN) {
+            } else if (randomCardOne.getRace() == Race.KRAKEN) {
                 damageDealt = randomCardOne.getDamage();
             } else {
                 //by default, the damage numbers are used as is
                 damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
             //Reverse Mixed Fight
-        } else if (randomCardOne instanceof Spell && randomCardTwo instanceof Monster) {
+        } else if (randomCardOne.isSpell() && randomCardTwo.isMonster()) {
             if (randomCardOne.getElement() == Element.WATER && ((Monster) randomCardTwo).getRace() == Race.KNIGHT) {
                 damageDealt = randomCardOne.getDamage();
-            } else if (((Monster) randomCardTwo).getRace() == Race.KRAKEN) {
+            } else if (randomCardTwo.getRace() == Race.KRAKEN) {
                 damageDealt = -randomCardTwo.getDamage();
             } else {
                 //by default, the damage numbers are used as is

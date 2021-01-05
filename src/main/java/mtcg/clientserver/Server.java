@@ -1,6 +1,7 @@
 package main.java.mtcg.clientserver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import main.java.mtcg.User;
 import main.java.mtcg.Battle;
 import main.java.mtcg.cards.*;
@@ -10,9 +11,7 @@ import java.lang.Package;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Locale;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -104,7 +103,7 @@ public class Server implements Runnable {
     //TODO: maybe just parse JSON first and then figure out what to do with it?
     //https://www.baeldung.com/jackson-object-mapper-tutorial
     public static User parseUser(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s.toLowerCase(Locale.ROOT), User.class);
+        return new ObjectMapper().readValue(s, User.class);
     }
 
     public static String convertUser(User u) throws JsonProcessingException {
@@ -112,20 +111,21 @@ public class Server implements Runnable {
         return new ObjectMapper().writeValueAsString(u);
     }
 
-    public static Monster parseMonster(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s.toLowerCase(Locale.ROOT), Monster.class);
+    public static Card parseCard(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, Card.class);
     }
 
     public static Spell parseSpell(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s.toLowerCase(Locale.ROOT), Spell.class);
+        return new ObjectMapper().readValue(s, Spell.class);
     }
 
     public Battle parseBattle(String s) throws JsonProcessingException {
         return new ObjectMapper().readValue(s, Battle.class);
     }
 
-    public static Package parsePackage(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s, Package.class);
+    public static List<Card> parsePackage(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, new TypeReference<>() {
+        });
     }
 
     public Deck parseDeck(String s) throws JsonProcessingException {

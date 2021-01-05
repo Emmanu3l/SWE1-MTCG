@@ -1,5 +1,6 @@
 package main.java.mtcg;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.mtcg.cards.Card;
 import main.java.mtcg.cards.Deck;
 
@@ -7,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class User {
+    @JsonProperty("Username")
     private String username;
+    @JsonProperty("Password")
     private String password;
     //the deck is used in the battles against other players.
     //private ArrayList<Card> deck;

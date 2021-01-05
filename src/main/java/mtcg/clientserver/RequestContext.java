@@ -70,9 +70,6 @@ public class RequestContext {
             } else if (getURI().equals("/score")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 //...
-            } else if (getURI().equals("/deck")) {
-                responseBuilder.append(ResponseCodes.OK.toString());
-                //...
             }
 
         } else if (getVerb().equals("POST")) {
