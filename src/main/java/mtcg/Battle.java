@@ -7,6 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Battle {
     private static User battlerOne;
     private static User battlerTwo;
+    private static Card cardOne;
+    private static Card cardTwo;
+    //TODO: variable for winner?
 
     //a battle is a request to the server to compete against another user with your currently defined deck.
 
@@ -17,21 +20,22 @@ public class Battle {
     //TODO: set git repository to PUBLIC after handing in the project
     //TODO: trading deals
     //TODO: focus on parsing the requests, take a closer look at the curl script
-    public static void main(String[] args) {
+
+    public static void battle() {
         //maximum of 100 rounds
         for (int i = 0; i < 100; i++) {
             // each battler draws one card each
             //TODO: adjust the following three lines for the new deck datatype
-            //Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
-            //Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
+            Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
+            Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
             //double damageDealt = gameLogic(randomCardOne, randomCardTwo);
 
         }
         //if it is a draw, the elo stays unchanged
-
     }
 
     //create GameResult Class which contains damage dealt by both Cards and the winner?
+    //TODO: this is the perfect method for a unit test
     public static double gameLogic(Card randomCardOne, Card randomCardTwo) {
         double damageDealt = 0;
         //Monster Fight
@@ -90,11 +94,24 @@ public class Battle {
                 damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
         }
+        System.out.println(generateLog(damageDealt));
         return damageDealt;
     }
 
-    public static String generateLog() {
-        return "";
+    public static String generateLog(double damageDealt) {
+        String whoWins = "";
+        if (damageDealt < 0) {
+            whoWins = cardTwo.getName() + " wins";
+            //TODO: take over cards
+        } else if (damageDealt > 0) {
+            whoWins = cardOne.getName() + " wins";
+            //TODO: take over cards
+        } else {
+            whoWins = "Draw";
+        }
+        return battlerOne.getUsername() + ": " + cardOne.getName() + "(" + cardOne.getDamage() + " Damage) vs " +
+                battlerTwo.getUsername() + ": " + cardTwo.getName() + "(" + cardTwo.getDamage() + " Damage) " +
+                "=> " + whoWins;
     }
 
     public static String parseBattle() {

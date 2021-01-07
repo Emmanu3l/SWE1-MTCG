@@ -1,5 +1,7 @@
 package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import main.java.mtcg.Json;
+import main.java.mtcg.Postgres;
 import main.java.mtcg.User;
 
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ public class RequestContext {
     private String verb;
     private String URI;
     private String version;
+    //TODO: shouldn't it be "header"?
     private ArrayList<String> headers;
     private String body;
 
@@ -36,7 +39,7 @@ public class RequestContext {
         //handle request and send appropriate response
         StringBuilder responseBuilder = new StringBuilder();
         responseBuilder.append(getVersion());
-        String messageID = getMessageID();
+        //String messageID = getMessageID();
         if (getVerb().equals("GET")) {
             //retrieve information without modifying it
             //if found: 200 (OK)
@@ -80,10 +83,12 @@ public class RequestContext {
             //if (getURI().equals("/messages")) {
             //messages.put(messages.size(), getBody());
             if (getURI().equals("/users")) {
-                User user = Server.parseUser(getBody());
-                //Server.register(user);
+                User user = Json.parseUser(getBody());
+                new Postgres().register(user);
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
+                //TODO: parse user, pass object to database
+                //TODO: this is what you have to do next
             } else if (getURI().equals("/sessions")) {
 
             } else if (getURI().equals("/packages")) {
@@ -93,6 +98,8 @@ public class RequestContext {
             } else if (getURI().equals("/tradings")) {
 
             } else if (getURI().equals("/battles")) {
+                //TODO: so this is where the battle happens
+
 
             } else if (getURI().equals("/tradings" + "" /* + /id */)) {
 
@@ -188,7 +195,7 @@ public class RequestContext {
         this.body = body;
     }
 
-    public String getMessageID() {
+    /*public String getMessageID() {
         String messageID;
         String[] extractID = URI.split("/");
         if (extractID.length == 3) {
@@ -197,7 +204,8 @@ public class RequestContext {
             messageID = null;
         }
         return messageID;
-    }
+    }*/
+
     public void parseRequest(BufferedReader in) throws IOException {
         //parse the http request's header containing the following information
         String request = null;

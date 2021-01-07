@@ -15,7 +15,8 @@ public class User {
     private String password;
     //the deck is used in the battles against other players.
     //private ArrayList<Card> deck;
-    private Deck deck;
+    //private Deck deck;
+    private List<Card> deck;
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
     private List<Card> stack;
@@ -32,7 +33,7 @@ public class User {
     }
 
 
-    public User(String username, String password, Deck deck, ArrayList<Card> stack) {
+    public User(String username, String password, List<Card> deck, List<Card> stack) {
         this.username = username;
         this.password = password;
         this.deck = deck;
@@ -56,11 +57,11 @@ public class User {
         this.password = password;
     }
 
-    public Deck getDeck() {
+    public List<Card> getDeck() {
         return deck;
     }
 
-    public void setDeck(Deck deck) {
+    public void setDeck(List<Card> deck) {
         this.deck = deck;
     }
 
