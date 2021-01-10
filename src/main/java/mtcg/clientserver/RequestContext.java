@@ -1,8 +1,7 @@
 package main.java.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import main.java.mtcg.Json;
-import main.java.mtcg.Postgres;
-import main.java.mtcg.User;
+import main.java.mtcg.*;
+import main.java.mtcg.cards.Pack;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,17 +60,24 @@ public class RequestContext {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 //output all cards that belong to a specific user
                 //...
+                Pack cards = new Postgres().getCardsForUser(getUsernameFromToken());
+                responseBuilder.append(Json.serializePack(cards));
             } else if (getURI().equals("/deck")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 //...
-            } else if (getURI().equals("/users" /* + /username */)) {
+            } else if (getURI().startsWith("/users" /* + /username */)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
+                User user = new Postgres().getUser(getUsernameFromToken());
+                responseBuilder.append(Json.serializeUser(user));
                 //...
-            } else if (getURI().equals("/stats")) {
+            }
+            else if (getURI().equals("/stats")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
+                responseBuilder.append(new Postgres().getStatsForUser(getUsernameFromToken()));
                 //...
             } else if (getURI().equals("/score")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
+                responseBuilder.append(new Postgres().getScoreboard());
                 //...
             }
 
@@ -90,16 +96,41 @@ public class RequestContext {
                 //TODO: parse user, pass object to database
                 //TODO: this is what you have to do next
             } else if (getURI().equals("/sessions")) {
+                User user = Json.parseUser(getBody());
+                new Postgres().login(user);
+                responseBuilder.append(ResponseCodes.CREATED.toString());
+                responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/packages")) {
-
+                //TODO: check header token for "admin" username
+                Pack pack = Json.parsePack(getBody());
+                new Postgres().createPackage(pack);
+                responseBuilder.append(ResponseCodes.CREATED.toString());
+                responseBuilder.append(messages.get(getBody()));
             } else if (getURI().equals("/transactions/packages")) {
+                //TODO: acquire packages. parse user from header
+                //get users from database, iterate through them and check whether the username is contained within the header
+                new Postgres().acquirePackages(new Postgres().getUser(getUsernameFromToken()));
+                responseBuilder.append(ResponseCodes.CREATED.toString());
+                responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/tradings")) {
+                new Postgres().createTradingDeal(Json.parseTrade(getBody()));
+                responseBuilder.append(ResponseCodes.CREATED.toString());
+                responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/battles")) {
                 //TODO: so this is where the battle happens
-
+                //add first person to database in the battle table
+                //then add the second person to the database in the battle table
+                //then, if there is at least two people in there, get their usernames and have them battle each other
+                //then print out the winner, add it to their stats and remove them from the battle table
+                User user = new Postgres().getUser(getUsernameFromToken());
+                if (new Postgres().twoBattlersExist()) {
+                    Battle battle = new Battle(new Postgres().getBattlerOne(), new Postgres().getBattlerTwo());
+                }
+                responseBuilder.append(ResponseCodes.CREATED.toString());
+                responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/tradings" + "" /* + /id */)) {
 
@@ -128,6 +159,7 @@ public class RequestContext {
                     //...
 
             } else if (getURI().equals("/users" /* + /username */)) {
+                //TODO: parse user from uri and edit user data
                 responseBuilder.append(ResponseCodes.OK.toString());
                 //...
             }
@@ -143,8 +175,11 @@ public class RequestContext {
             } else {
                 responseBuilder.append(ResponseCodes.NO_CONTENT.toString());
             }*/
-            if (getURI().equals("/tradings" /* + /id */)) {
+            if (getURI().startsWith("/tradings" /* + /id */)) {
+                //TODO: get trading id from second part of URI
                 responseBuilder.append(ResponseCodes.OK.toString());
+                //TODO: delete trading deals
+                new Postgres().deleteTradingDeal(getTradeId());
                 //...
             }
         } else {
@@ -256,6 +291,37 @@ public class RequestContext {
         String body = bodyBuilder.toString().trim();
         System.out.println("body: " + body);
         this.setBody(body);
+    }
+
+    public String getTradeId() {
+        return getURI().split("/")[2];
+    }
+
+    public String getUsernameFromToken() {
+        //something with string split
+        //depending on the scenario, the username is in a different header index
+        //iterate through headers
+        String result = "";
+        for (String s: headers) {
+            if (s.startsWith("Authorization")) {
+                //returns "user" from user-mtcgToken
+                result = s.split("-")[0];
+            }
+        }
+        return result;
+
+        // alternatively
+        /*
+        Pattern pattern = Pattern.compile("Authorization: (.+)-(.+)");
+        Matcher matcher = pattern.matcher(input);
+
+        if (!matcher.matches()) {
+        //input is wrong format ...
+        }
+
+        String user = matcher.group(1);
+        String token = matcher.group(2);
+        */
     }
 
 }

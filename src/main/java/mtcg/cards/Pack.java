@@ -1,14 +1,20 @@
 package main.java.mtcg.cards;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import main.java.mtcg.User;
+
 import java.util.ArrayList;
 
-public class Package {
-    private ArrayList<Card> pack;
+public class Pack {
 
-    public Package() {
+    @JsonDeserialize(as = ArrayList.class, contentAs = Card.class)
+    private ArrayList<Card> pack;
+    //private User owner;
+
+    public Pack() {
     }
 
-    public Package(ArrayList<Card> pack) {
+    public Pack(ArrayList<Card> pack) {
         this.pack = pack;
     }
 
@@ -37,4 +43,5 @@ public class Package {
         }
         return result.toString();
     }
+
 }

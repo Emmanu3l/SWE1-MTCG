@@ -31,7 +31,8 @@ public class Main {
         //no point in creating a postgres object variable if i'm not gonna use it again. The data stays on the db regardless
         //or would it make more sense to make it static?
         //this makes more sense, since it always creates a new connection, I think
-        new Postgres().createTables();
+        //TODO: uncomment the next line once you feel confident enough about the database part
+        //new Postgres().createTables();
         try {
             ServerSocket listener = new ServerSocket(10001);
             RequestContext requestContext = new RequestContext();

@@ -13,14 +13,18 @@ public class User {
     private String username;
     @JsonProperty("Password")
     private String password;
+    @JsonProperty("Bio")
+    private String bio;
+    @JsonProperty("Image")
+    private String image;
+    private int coins = 20;
     //the deck is used in the battles against other players.
     //private ArrayList<Card> deck;
     //private Deck deck;
-    private List<Card> deck;
+    private ArrayList<Card> deck;
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
-    private List<Card> stack;
-    private int coins = 20;
+    private ArrayList<Card> stack;
     private int elo = 100;
     private int gamesPlayed = 0;
 
@@ -32,12 +36,53 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String password, String bio, String image) {
+        this.username = username;
+        this.password = password;
+        this.bio = bio;
+        this.image = image;
+    }
 
-    public User(String username, String password, List<Card> deck, List<Card> stack) {
+    public User(String username, String password, String bio, String image, int coins, int elo) {
+        this.username = username;
+        this.password = password;
+        this.bio = bio;
+        this.image = image;
+        this.coins = coins;
+        this.elo = elo;
+    }
+
+
+
+    public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
         this.username = username;
         this.password = password;
         this.deck = deck;
         this.stack = stack;
+    }
+
+    public void removeFromDeck(Card c) {
+        this.deck.remove(c);
+    }
+
+    public void addToDeck(Card c) {
+        this.deck.add(c);
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getUsername() {
@@ -57,15 +102,15 @@ public class User {
         this.password = password;
     }
 
-    public List<Card> getDeck() {
+    public ArrayList<Card> getDeck() {
         return deck;
     }
 
-    public void setDeck(List<Card> deck) {
+    public void setDeck(ArrayList<Card> deck) {
         this.deck = deck;
     }
 
-    public List<Card> getStack() {
+    public ArrayList<Card> getStack() {
         return stack;
     }
 
@@ -79,6 +124,14 @@ public class User {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public void eloUp() {
+        this.elo += 3;
+    }
+
+    public void eloDown() {
+        this.elo -= 5;
     }
 
     public int getElo() {

@@ -51,6 +51,7 @@ public class Server implements Runnable {
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
             String response = this.requestContext.handleRequest(messages);
+            System.out.println(response);
             out.println(response);
             out.flush();
             in.close();
