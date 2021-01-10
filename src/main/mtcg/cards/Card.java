@@ -1,5 +1,6 @@
 package main.mtcg.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Locale;
@@ -14,7 +15,12 @@ public class Card {
     private double damage;
     //private Element element;
 
-    public Card() {
+    @JsonCreator
+    public Card(@JsonProperty("Id") String id, @JsonProperty("Name") String name, @JsonProperty("Damage") double damage) {
+        this.id = id;
+        this.name = name;
+        this.damage = damage;
+
     }
 
     @Override
@@ -30,11 +36,6 @@ public class Card {
         return Objects.hash(id, name, damage);
     }
 
-    public Card(String id, String name, double damage) {
-        this.id = id;
-        this.name = name;
-        this.damage = damage;
-    }
 
     /*public Card(String id, String name, double damage, Element element) {
         this.id = id;

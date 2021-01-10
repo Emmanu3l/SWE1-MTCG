@@ -7,11 +7,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Battle {
     private User battlerOne;
     private User battlerTwo;
-    private Card cardOne;
-    private Card cardTwo;
     private Card winningCard;
     private User winningUser;
     private User losingUser;
+    private Card randomCardOne;
+    private Card randomCardTwo;
     private double damageDealt;
     private boolean isDraw = false;
     private String whichWins;
@@ -45,21 +45,24 @@ public class Battle {
         for (int i = 0; i < 100; i++) {
             // each battler draws one card each
             //TODO: adjust the following three lines for the new deck datatype
-            Card randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
-            Card randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
+            randomCardOne = battlerOne.getDeck().get(ThreadLocalRandom.current().nextInt(battlerOne.getDeck().size()));
+            randomCardTwo = battlerTwo.getDeck().get(ThreadLocalRandom.current().nextInt(battlerTwo.getDeck().size()));
             Card card = returnWinningCard(randomCardOne, randomCardTwo);
             winningUser.addToDeck(card);
             losingUser.removeFromDeck(card);
+            System.out.println(generateLog());
             //TODO: take over cards
             //count wins for users
         }
         if (battlerOneWins > battlerTwoWins) {
             battlerOne.eloUp();
             battlerTwo.eloDown();
+            System.out.println(battlerOne.getUsername() + " wins");
             return battlerOne;
         } else {
             battlerTwo.eloUp();
             battlerOne.eloDown();
+            System.out.println(battlerTwo.getUsername() + " wins");
             return battlerTwo;
         }
         //if it is a draw, the elo stays unchanged
@@ -72,13 +75,13 @@ public class Battle {
         //Monster Fight
         if (randomCardOne.isMonster() && randomCardTwo.isMonster()) {
             //specialties
-            if (randomCardOne.getRace() == Race.GOBLIN && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
+            if (randomCardOne.getRace() == Race.GOBLIN && (randomCardTwo).getRace() == Race.DRAGON) {
                 //Goblins are too afraid of Dragons to attack.
                 damageDealt = -randomCardTwo.getDamage();
-            } else if (randomCardOne.getRace() == Race.WIZZARD && ((Monster) randomCardTwo).getRace() == Race.ORK) {
+            } else if (randomCardOne.getRace() == Race.WIZZARD && (randomCardTwo).getRace() == Race.ORK) {
                 //Wizzard can control Orks so they are not able to damage them.
                 damageDealt = randomCardOne.getDamage();
-            } else if (randomCardOne.getRace() == Race.ELF && randomCardOne.getElement() == Element.FIRE && ((Monster) randomCardTwo).getRace() == Race.DRAGON) {
+            } else if (randomCardOne.getRace() == Race.ELF && randomCardOne.getElement() == Element.FIRE && (randomCardTwo).getRace() == Race.DRAGON) {
                 //The FireElves know Dragons since they were little and can evade their attacks.
                 damageDealt = randomCardOne.getDamage();
             } else {
@@ -116,7 +119,7 @@ public class Battle {
             }
             //Reverse Mixed Fight
         } else if (randomCardOne.isSpell() && randomCardTwo.isMonster()) {
-            if (randomCardOne.getElement() == Element.WATER && ((Monster) randomCardTwo).getRace() == Race.KNIGHT) {
+            if (randomCardOne.getElement() == Element.WATER && (randomCardTwo).getRace() == Race.KNIGHT) {
                 damageDealt = randomCardOne.getDamage();
             } else if (randomCardTwo.getRace() == Race.KRAKEN) {
                 damageDealt = -randomCardTwo.getDamage();
@@ -125,19 +128,18 @@ public class Battle {
                 damageDealt = randomCardOne.getDamage() - randomCardTwo.getDamage();
             }
         }
-        User winner;
         this.damageDealt = damageDealt;
         if (damageDealt < 0) {
             winningUser = battlerTwo;
             losingUser = battlerOne;
-            winningCard = cardTwo;
+            winningCard = randomCardTwo;
             battlerTwoWins += 1;
             whichWins = winningCard.getName() + " wins";
             //TODO: take over cards
         } else if (damageDealt > 0) {
             winningUser = battlerOne;
             losingUser = battlerTwo;
-            winningCard = cardOne;
+            winningCard = randomCardOne;
             battlerOneWins += 1;
             whichWins = winningCard.getName() + " wins";
             //TODO: take over cards
@@ -146,20 +148,14 @@ public class Battle {
             whichWins = "Draw";
         }
 
-        System.out.println(generateLog());
         return winningCard;
     }
 
     public String generateLog() {
-        return battlerOne.getUsername() + ": " + cardOne.getName() + "(" + cardOne.getDamage() + " Damage) vs " +
-                battlerTwo.getUsername() + ": " + cardTwo.getName() + "(" + cardTwo.getDamage() + " Damage) " +
+        return battlerOne.getUsername() + ": " + randomCardOne.getName() + "(" + randomCardOne.getDamage() + " Damage) vs " +
+                battlerTwo.getUsername() + ": " + randomCardTwo.getName() + "(" + randomCardTwo.getDamage() + " Damage) " +
                 "=> " + whichWins;
 
-    }
-
-    public static String parseBattle() {
-        //interpret the request, get the Element and Race, etc.
-        return "";
     }
 
 }

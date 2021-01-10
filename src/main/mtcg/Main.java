@@ -1,20 +1,12 @@
 package main.mtcg;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import main.mtcg.cards.Card;
-import main.mtcg.cards.Element;
-import main.mtcg.cards.Monster;
 import main.mtcg.clientserver.RequestContext;
 import main.mtcg.clientserver.Server;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 //TODO: the main difficulty now is how to save the users within the server and how to save the cards for every user, etc.

@@ -21,7 +21,7 @@ public class User {
     //the deck is used in the battles against other players.
     //private ArrayList<Card> deck;
     //private Deck deck;
-    private ArrayList<Card> deck;
+    private ArrayList<Card> deck =  new ArrayList<>();
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
     private ArrayList<Card> stack;

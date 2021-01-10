@@ -47,7 +47,7 @@ public class Postgres {
     //no need to create a new db since the db "postgres" already exists
     public void createTables() throws SQLException {
         //TODO: create all necessary tables
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, coins INT DEFAULT 20 NOT NULL,  elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, coins INT DEFAULT 20 NOT NULL, elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS CARDS (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, bio TEXT, image TEXT, damage DOUBLE PRECISION NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS SESSIONS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS PACKAGES (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
