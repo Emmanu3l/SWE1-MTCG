@@ -2,10 +2,6 @@
 **Link to my git repository:**
 https://github.com/Emmanu3l/SWE1-MTCG
 
-**Reasons for choosing the respective collection types:**
-
-**Why these unit tests are chosen and why the tested code is critical:**
-
 **Protocol:**
 
 Oct 13. 2020:
@@ -57,7 +53,7 @@ Adding PostgreSQL. Considering whether to use JetBrains DataGrip.
 ~2 hours
 
 Jan 1-10:
-Focusing more on the DB and Server part of the project.
+Focusing more on the DB and Server part of the project. Finally fixing the project structure errors that resulted by adding Maven.
 ~4 hours a day
 
 Konklusion (aus irgendeinem Grund nun auf Deutsch):
@@ -66,7 +62,5 @@ zu schreiben bevor ich die Server und DB Aspekte des Programmes entwickelt
 hatte. Ein großer Teil des Codes, den ich geschrieben habe, hat sich als nutzlos herausgestellt, 
 da die Funktionalität durch DB Funktionalität ersetzt wurde. Des Weiteren haben sich meine eingerosteten 
 SQL Kenntnisse als massives Problem entpuppt. Insgesamt würde ich sagen, dass mein größter Fehler das 
-Unterschätzen des SQL Aspektes war. Früher anfangen hätte ich auch können, jedoch ist es bei mir oftmals der 
-Fall, dass es lange dauert, bis ich die Angabe verstehe. Womöglich hängt das damit zusammen, 
-dass ich auf der TU selten mit derart praxisorientierten Beispielen zutun hatte.
-Zudem hatte ich nach dem wechsel auf Maven dutzende Probleme mit IntelliJ welche sich nicht erübrigt haben.
+Unterschätzen des SQL Aspektes war.
+Zudem hatte ich nach dem wechsel auf Maven dutzende Probleme mit IntelliJ welche sich erst nach vielen Stunden erübrigt haben
