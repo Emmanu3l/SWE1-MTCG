@@ -17,6 +17,7 @@ public class Battle {
     private String whichWins;
     private int battlerOneWins = 0;
     private int battlerTwoWins = 0;
+    private String log;
     //TODO: variable for winner?
 
     public Battle() {
@@ -51,6 +52,7 @@ public class Battle {
             winningUser.addToDeck(card);
             losingUser.removeFromDeck(card);
             System.out.println(generateLog());
+            //generateLog();
             //TODO: take over cards
             //count wins for users
         }
@@ -58,11 +60,13 @@ public class Battle {
             battlerOne.eloUp();
             battlerTwo.eloDown();
             System.out.println(battlerOne.getUsername() + " wins");
+            this.log += battlerOne.getUsername() + " wins";
             return battlerOne;
         } else {
             battlerTwo.eloUp();
             battlerOne.eloDown();
             System.out.println(battlerTwo.getUsername() + " wins");
+            this.log += battlerTwo.getUsername() + " wins";
             return battlerTwo;
         }
         //if it is a draw, the elo stays unchanged
@@ -152,10 +156,14 @@ public class Battle {
     }
 
     public String generateLog() {
-        return battlerOne.getUsername() + ": " + randomCardOne.getName() + "(" + randomCardOne.getDamage() + " Damage) vs " +
+        return this.log += battlerOne.getUsername() + ": " + randomCardOne.getName() + "(" + randomCardOne.getDamage() + " Damage) vs " +
                 battlerTwo.getUsername() + ": " + randomCardTwo.getName() + "(" + randomCardTwo.getDamage() + " Damage) " +
                 "=> " + whichWins;
 
+    }
+
+    public String getLog() {
+        return log;
     }
 
 }

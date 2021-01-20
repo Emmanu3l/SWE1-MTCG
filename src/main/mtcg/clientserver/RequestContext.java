@@ -18,6 +18,7 @@ public class RequestContext {
     //TODO: shouldn't it be "header"?
     private ArrayList<String> headers;
     private String body;
+    private String log;
 
     public RequestContext(String verb, String URI, String version, ArrayList<String> headers, String body) {
         this.verb = verb;
@@ -128,14 +129,21 @@ public class RequestContext {
                 responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/battles")) {
-                //TODO: so this is where the battle happens
+                //TODO: this is where the battle should happen
                 //add first person to database in the battle table
                 //then add the second person to the database in the battle table
                 //then, if there is at least two people in there, get their usernames and have them battle each other
                 //then print out the winner, add it to their stats and remove them from the battle table
                 User user = new Postgres().getUser(getUsernameFromToken());
-                if (new Postgres().twoBattlersExist()) {
-                    Battle battle = new Battle(new Postgres().getBattlerOne(), new Postgres().getBattlerTwo());
+                //TODO: implement these three methods!!!
+                //TODO: add battler before if statement
+                //TODO: remove battlers in if STATEMENT
+                if (new Postgres().getBattlerCount() > 1) {
+                    Battle battle = new Battle(new Postgres().popBattler(), new Postgres().popBattler());
+                    battle.returnWinner();
+                    passBattleLog(battle.getLog());
+                } else {
+                    new Postgres().addBattler(new Postgres().getUser(getUsernameFromToken()));
                 }
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
@@ -239,6 +247,14 @@ public class RequestContext {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public void passBattleLog(String log) {
+        this.log = log;
+    }
+
+    public String retrieveBattleLog() {
+        return this.log;
     }
 
     /*public String getMessageID() {

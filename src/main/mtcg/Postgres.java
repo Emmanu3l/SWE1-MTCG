@@ -49,6 +49,7 @@ public class Postgres {
     public void createTables() throws SQLException {
         //TODO: create all necessary tables
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, bio TEXT, image TEXT, coins INT DEFAULT 20 NOT NULL, elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS BATTLERS (username TEXT PRIMARY KEY NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS CARDS (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, damage DOUBLE PRECISION NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS SESSIONS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS PACKAGES (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
@@ -100,6 +101,17 @@ public class Postgres {
 
     }
 
+    public void addBattler(User user) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO BATTLERS (username) values (?)");
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+            //ignore duplicate users
+        }
+    }
+
     public void connect(String url, User user) throws SQLException {
         this.connection = DriverManager.getConnection(url, user.getUsername(), user.getPassword());
     }
@@ -138,22 +150,30 @@ public class Postgres {
         //TODO: add the user to the battle table
     }
 
-    public boolean twoBattlersExist() {
+    public int getBattlerCount() throws SQLException {
         //TODO: check whether both battlers are in the database
-        return true;
+        int counter = 0;
+        ResultSet resultSet = statement.executeQuery("SELECT COUNT(username) FROM BATTLERS");
+        while (resultSet.next()) {
+            counter += 1;
+        }
+        return counter;
     }
 
-    public User getBattlerOne() {
-       return null;
+    public User popBattler() throws SQLException {
+        //retrieve User by getting the name from the battler table, then getting that User from the user table
+        //then remove the User from the battler table
+        String username = "";
+        ResultSet resultSet = statement.executeQuery("SELECT username FROM BATTLERS LIMIT 1");
+        while (resultSet.next()) {
+            username = resultSet.getString("username");
+        }
+        statement.executeUpdate("DELETE FROM BATTLERS WHERE username ='" + username + "'");
+
+       return getUser(username);
     }
 
-    public User getBattlerTwo() {
-        return null;
-    }
 
-    public void dropBattlers() {
-        //TODO: remove the battlers so additional battlers can be added afterwards
-    }
     public int generatePackageNumber() {
         return this.packageNumber += 1;
     }
