@@ -9,7 +9,6 @@ import main.mtcg.cards.Pack;
 import main.mtcg.cards.Spell;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Json {
 
@@ -41,7 +40,10 @@ public class Json {
     }
 
     public static Pack parsePack(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s, Pack.class);
+        //json will read the input as an array, therefore I have to turn it into an object afterward to avoid errors
+        ArrayList<Card> cardList = new ObjectMapper().readValue(s, new TypeReference<>(){});
+        return new Pack(cardList);
+        //return new ObjectMapper().readValue(s, Pack.class);
     }
 
     public static String serializePack(Pack pack) throws JsonProcessingException {
@@ -55,6 +57,10 @@ public class Json {
 
     public static Trade parseTrade(String s) throws JsonProcessingException {
         return new ObjectMapper().readValue(s, Trade.class);
+    }
+
+    public static String serializeTrade(Trade trade) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(Trade.class);
     }
 
 }

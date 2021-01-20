@@ -24,7 +24,7 @@ public class Main {
         //or would it make more sense to make it static?
         //this makes more sense, since it always creates a new connection, I think
         //TODO: uncomment the next line once you feel confident enough about the database part
-        //new Postgres().createTables();
+        new Postgres().createTables();
         try {
             ServerSocket listener = new ServerSocket(10001);
             RequestContext requestContext = new RequestContext();

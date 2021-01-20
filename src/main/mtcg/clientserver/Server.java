@@ -1,5 +1,6 @@
 package main.mtcg.clientserver;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import main.mtcg.User;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //https://restfulapi.net/http-status-codes/
 //look up more information about "java multi threaded tcp server" to make sure you're doing it correctly
 
+@JsonAutoDetect
 public class Server implements Runnable {
     //for persistent storage, fields are needed
     private /*final */Socket s;

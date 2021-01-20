@@ -1,5 +1,6 @@
 package main.mtcg;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import main.mtcg.cards.Card;
 import main.mtcg.cards.Pack;
 
@@ -26,7 +27,7 @@ public class Postgres {
             e.printStackTrace();
             System.exit(0);
         }
-        finally {
+        /*finally {
             //close resources
             //TODO: drop database at the end
             try {
@@ -40,15 +41,15 @@ public class Postgres {
             }catch (SQLException se){
                 se.printStackTrace();
             }
-        }
+        }*/
     }
 
     //TODO: have all methods that can fail return a boolean and print out "task failed" in that case. With those methods, it also makes more sense to use a prepared statement.
     //no need to create a new db since the db "postgres" already exists
     public void createTables() throws SQLException {
         //TODO: create all necessary tables
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, coins INT DEFAULT 20 NOT NULL, elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS CARDS (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, bio TEXT, image TEXT, damage DOUBLE PRECISION NOT NULL)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, bio TEXT, image TEXT, coins INT DEFAULT 20 NOT NULL, elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS CARDS (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, damage DOUBLE PRECISION NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS SESSIONS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS PACKAGES (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
         //statement.executeUpdate("CREATE TABLE IF NOT EXISTS SCOREBOARD (username TEXT PRIMARY KEY NOT NULL, elo INTEGER DEFAULT 100 NOT NULL)");
@@ -71,10 +72,32 @@ public class Postgres {
         //TODO: maybe add default values like the coin int? The statement has already been parsed, so it's a good time to add more data to the database
 
         //TODO: if the username already exists it should fail
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO USERS (username, password) values (?, ?)");
-        preparedStatement.setString(1, user.getUsername());
-        preparedStatement.setString(2, user.getPassword());
-        preparedStatement.execute();
+
+        //TODO: check for duplicate user!!!
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO USERS (username, password) values (?, ?)");
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+            //ignore duplicate users
+        }
+    }
+
+    public void updateUser(User user) throws SQLException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE USERS SET (username, bio, image) values (?, ?, ?) WHERE username = '" + user.getUsername() +"'");
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getBio());
+            preparedStatement.setString(3, user.getImage());
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+            //ignore duplicate users
+        }
+
     }
 
     public void connect(String url, User user) throws SQLException {
@@ -137,19 +160,26 @@ public class Postgres {
 
     public User getUser(String username) throws SQLException {
         //TODO: get current users. or should i get them from sessions?
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM USERS WHERE username = " + username);
-        String password = resultSet.getString("password");
-        String bio = resultSet.getString("bio");
-        String image = resultSet.getString("image");
-        int coins = resultSet.getInt("coins");
-        int elo = resultSet.getInt("elo");
-
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM USERS WHERE username = '" + username + "'");
+        //because of the error "ResultSet not positioned properly, perhaps you need to call next."
+        String password = "";
+        String bio = "";
+        String image = "";
+        int coins = 0;
+        int elo = 0;
+        while (resultSet.next()) {
+            password = resultSet.getString("password");
+            bio = resultSet.getString("bio");
+            image = resultSet.getString("image");
+            coins = resultSet.getInt("coins");
+            elo = resultSet.getInt("elo");
+        }
         return new User(username, password, bio, image, coins, elo);
     }
 
     public Pack getCardsForUser(String username) throws SQLException {
         ArrayList<String> cardIds = new ArrayList<>();
-        ResultSet resultSet = statement.executeQuery("SELECT card_ids FROM USERS WHERE username = " + username);
+        ResultSet resultSet = statement.executeQuery("SELECT card_ids FROM USERS WHERE username = '" + username + "'");
         resultSet.close();
         ArrayList<Card> cards = null;
         String id;
@@ -182,9 +212,22 @@ public class Postgres {
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TRADINGS (id, card_to_trade, type, minimum_damage) VALUES (?, ?, ?, ?)");
         preparedStatement.setString(1, trade.getId());
         preparedStatement.setString(2, trade.getCardToTrade());
-        preparedStatement.setString(2, trade.getType());
-        preparedStatement.setInt(2, trade.getMinimumDamage());
-        preparedStatement.execute();
+        preparedStatement.setString(3, trade.getType());
+        preparedStatement.setInt(4, trade.getMinimumDamage());
+        try {
+
+        } catch (Exception e) {
+            preparedStatement.execute();
+        }
+    }
+
+    public String getTradingDeals() throws SQLException, JsonProcessingException {
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM TRADINGS");
+        StringBuilder stringBuilder = new StringBuilder();
+        while (resultSet.next()) {
+            stringBuilder.append(Json.serializeTrade(new Trade(resultSet.getString("id"), resultSet.getString("card_to_trade"), resultSet.getString("type"), resultSet.getInt("minimum_damage"))));
+        }
+        return stringBuilder.toString();
     }
 
     public void acquirePackages(User user) {
@@ -192,7 +235,7 @@ public class Postgres {
     }
 
     public void deleteTradingDeal(String tradeID) throws SQLException {
-        statement.executeUpdate("DELETE FROM TRADINGS WHERE id = " + tradeID);
+        statement.executeUpdate("DELETE FROM TRADINGS WHERE id = '" + tradeID + "'");
     }
 
 

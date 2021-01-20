@@ -65,10 +65,15 @@ public class RequestContext {
             } else if (getURI().equals("/deck")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 //...
+            } else if (getURI().equals("/deck?format=plain")) {
+                responseBuilder.append(ResponseCodes.OK);
+                responseBuilder.append(new Postgres().getUser(getUsernameFromToken()).getDeck());
             } else if (getURI().startsWith("/users" /* + /username */)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
-                User user = new Postgres().getUser(getUsernameFromToken());
-                responseBuilder.append(Json.serializeUser(user));
+                if (getUsernameFromToken().equals(getUsernameFromURI())) {
+                    User user = new Postgres().getUser(getUsernameFromToken());
+                    responseBuilder.append(Json.serializeUser(user));
+                }
                 //...
             }
             else if (getURI().equals("/stats")) {
@@ -79,6 +84,9 @@ public class RequestContext {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 responseBuilder.append(new Postgres().getScoreboard());
                 //...
+            } else if (getURI().equals("/tradings")) {
+                responseBuilder.append(ResponseCodes.OK.toString());
+                responseBuilder.append(new Postgres().getTradingDeals());
             }
 
         } else if (getVerb().equals("POST")) {
@@ -158,10 +166,13 @@ public class RequestContext {
                     responseBuilder.append(ResponseCodes.OK.toString());
                     //...
 
-            } else if (getURI().equals("/users" /* + /username */)) {
+            } else if (getURI().startsWith("/users" /* + /username */)) {
                 //TODO: parse user from uri and edit user data
                 responseBuilder.append(ResponseCodes.OK.toString());
-                //...
+                if (getUsernameFromToken().equals(getUsernameFromURI())) {
+                    new Postgres().updateUser(Json.parseUser(getBody()));
+                }
+                    //...
             }
 
         } else if (getVerb().equals("DELETE")) {
@@ -291,6 +302,10 @@ public class RequestContext {
         String body = bodyBuilder.toString().trim();
         System.out.println("body: " + body);
         this.setBody(body);
+    }
+
+    public String getUsernameFromURI() {
+        return getURI().split("/")[2];
     }
 
     public String getTradeId() {

@@ -1,5 +1,7 @@
 package main.mtcg.cards;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import main.mtcg.User;
 
@@ -18,12 +20,14 @@ public class Pack {
         this.pack = pack;
     }
 
+    @JsonGetter
     public ArrayList<Card> getPack() {
         return pack;
     }
 
-    public void setPack(ArrayList<Card> pack) {
-        this.pack = pack;
+    @JsonSetter
+    public void addCardToPack(Card card) {
+        this.pack.add(card);
     }
 
     public Card getCardFromPack(String id) {
