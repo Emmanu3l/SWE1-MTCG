@@ -2,10 +2,9 @@ package main.mtcg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import main.mtcg.cards.Card;
-import main.mtcg.cards.Deck;
+import main.mtcg.cards.CardCollection;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -21,10 +20,10 @@ public class User {
     //the deck is used in the battles against other players.
     //private ArrayList<Card> deck;
     //private Deck deck;
-    private ArrayList<Card> deck =  new ArrayList<>();
+    private CardCollection deck =  new CardCollection();
     //a user has multiple cards in his stack.
     //a stack is the collection of all his current cards (hint: cards can be removed by trading).
-    private ArrayList<Card> stack;
+    private CardCollection stack = new CardCollection();
     private int elo = 100;
     private int gamesPlayed = 0;
 
@@ -54,7 +53,7 @@ public class User {
 
 
 
-    public User(String username, String password, ArrayList<Card> deck, ArrayList<Card> stack) {
+    public User(String username, String password, CardCollection deck, CardCollection stack) {
         this.username = username;
         this.password = password;
         this.deck = deck;
@@ -62,11 +61,11 @@ public class User {
     }
 
     public void removeFromDeck(Card c) {
-        this.deck.remove(c);
+        this.deck.getCardCollection().remove(c);
     }
 
     public void addToDeck(Card c) {
-        this.deck.add(c);
+        this.deck.getCardCollection().add(c);
     }
 
     public String getBio() {
@@ -103,19 +102,19 @@ public class User {
     }
 
     public ArrayList<Card> getDeck() {
-        return deck;
+        return deck.getCardCollection();
     }
 
     public void setDeck(ArrayList<Card> deck) {
-        this.deck = deck;
+        this.deck.setCardCollection(deck);
     }
 
     public ArrayList<Card> getStack() {
-        return stack;
+        return stack.getCardCollection();
     }
 
     public void setStack(ArrayList<Card> stack) {
-        this.stack = stack;
+        this.stack.setCardCollection(stack);
     }
 
     public int getCoins() {

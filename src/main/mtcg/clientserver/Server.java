@@ -55,7 +55,7 @@ public class Server implements Runnable {
             String response = this.requestContext.handleRequest(messages);
             String log = this.requestContext.retrieveBattleLog();
             System.out.println(response);
-            System.out.println(log);
+            System.out.println("BATTLE LOG " + log);
             out.println(response);
             out.println(log);
             out.flush();

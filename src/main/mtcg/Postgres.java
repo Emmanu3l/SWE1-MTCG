@@ -2,11 +2,11 @@ package main.mtcg;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.mtcg.cards.Card;
+import main.mtcg.cards.CardCollection;
 import main.mtcg.cards.Pack;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Postgres {
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
@@ -51,9 +51,11 @@ public class Postgres {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL, bio TEXT, image TEXT, coins INT DEFAULT 20 NOT NULL, elo INT DEFAULT 100 NOT NULL, card_ids TEXT)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS BATTLERS (username TEXT PRIMARY KEY NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS CARDS (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, damage DOUBLE PRECISION NOT NULL)");
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS SESSIONS (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS STACKS (username TEXT PRIMARY KEY NOT NULL REFERENCES USERS(username), card_id TEXT)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS SESSIONS (username TEXT PRIMARY KEY NOT NULL REFERENCES USERS(username), password TEXT NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS PACKAGES (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL)");
-        //statement.executeUpdate("CREATE TABLE IF NOT EXISTS SCOREBOARD (username TEXT PRIMARY KEY NOT NULL, elo INTEGER DEFAULT 100 NOT NULL)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS DECKS (username TEXT PRIMARY KEY NOT NULL REFERENCES USERS(username), card_id TEXT)");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS SCOREBOARD (username TEXT PRIMARY KEY NOT NULL REFERENCES USERS(username), elo INTEGER DEFAULT 100 NOT NULL)");
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS TRADINGS (id TEXT PRIMARY KEY NOT NULL, card_to_trade TEXT NOT NULL, type TEXT NOT NULL, minimum_damage INT NOT NULL)");
     }
 
@@ -251,10 +253,17 @@ public class Postgres {
     }
 
     public void acquirePackages(User user) {
+        //add to user stack
 
     }
 
     public void deleteTradingDeal(String tradeID) throws SQLException {
+        statement.executeUpdate("DELETE FROM TRADINGS WHERE id = '" + tradeID + "'");
+    }
+
+    public void configureDeck(User user, String json) {
+        //add to user deck
+        CardCollection cardCollection = null;
         statement.executeUpdate("DELETE FROM TRADINGS WHERE id = '" + tradeID + "'");
     }
 

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestContext {
     //GET, POST, PUT, DELETE
@@ -19,6 +20,8 @@ public class RequestContext {
     private ArrayList<String> headers;
     private String body;
     private String log;
+    //TODO: maybe just implement it without DB data? at least the complicated parts like deck/stack/battle
+    //private ConcurrentHashMap
 
     public RequestContext(String verb, String URI, String version, ArrayList<String> headers, String body) {
         this.verb = verb;
@@ -65,6 +68,7 @@ public class RequestContext {
                 responseBuilder.append(Json.serializePack(cards));
             } else if (getURI().equals("/deck")) {
                 responseBuilder.append(ResponseCodes.OK.toString());
+                responseBuilder.append(getUsernameFromToken()); //TODO: get deck for user from token
                 //...
             } else if (getURI().equals("/deck?format=plain")) {
                 responseBuilder.append(ResponseCodes.OK);
@@ -138,7 +142,9 @@ public class RequestContext {
                 //TODO: implement these three methods!!!
                 //TODO: add battler before if statement
                 //TODO: remove battlers in if STATEMENT
-                if (new Postgres().getBattlerCount() > 1) {
+
+                //comment out if statement since it doesn't seem to work
+                if (/*new Postgres().getBattlerCount() > 1*/ true) {
                     Battle battle = new Battle(new Postgres().popBattler(), new Postgres().popBattler());
                     battle.returnWinner();
                     passBattleLog(battle.getLog());
@@ -172,6 +178,9 @@ public class RequestContext {
             }*/
             if (getURI().equals("/deck")) {
                     responseBuilder.append(ResponseCodes.OK.toString());
+                    //TODO: do something
+                    new Postgres().configureDeck(new Postgres().getUser(getUsernameFromToken()), getBody());
+
                     //...
 
             } else if (getURI().startsWith("/users" /* + /username */)) {

@@ -3,35 +3,33 @@ package main.mtcg.cards;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import main.mtcg.User;
 
 import java.util.ArrayList;
 
-public class Pack extends CardCollection {
-
+public class CardCollection {
     @JsonDeserialize(as = ArrayList.class, contentAs = Card.class)
-    private ArrayList<Card> pack;
+    private ArrayList<Card> cardCollection;
     //private User owner;
 
-    public Pack() {
+    public CardCollection() {
     }
 
-    public Pack(ArrayList<Card> pack) {
-        this.pack = pack;
+    public CardCollection(ArrayList<Card> pack) {
+        this.cardCollection = pack;
     }
 
     @JsonGetter
-    public ArrayList<Card> getPack() {
-        return pack;
+    public ArrayList<Card> getCardCollection() {
+        return cardCollection;
     }
 
     @JsonSetter
     public void addCardToPack(Card card) {
-        this.pack.add(card);
+        this.cardCollection.add(card);
     }
 
     public Card getCardFromPack(String id) {
-        for (Card c: this.pack) {
+        for (Card c: this.cardCollection) {
             if (c.getId().equals(id)) {
                 return c;
             }
@@ -39,10 +37,14 @@ public class Pack extends CardCollection {
         return null;
     }
 
+    public void setCardCollection(ArrayList<Card> cardCollection) {
+        this.cardCollection = cardCollection;
+    }
+
     @Override
     public String toString() {
         StringBuilder result = null;
-        for (Card c: this.pack) {
+        for (Card c: this.cardCollection) {
             result.append(c.toString());
         }
         return result.toString();

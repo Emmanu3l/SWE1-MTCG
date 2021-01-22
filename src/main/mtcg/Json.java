@@ -3,10 +3,7 @@ package main.mtcg;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.mtcg.cards.Card;
-import main.mtcg.cards.Deck;
-import main.mtcg.cards.Pack;
-import main.mtcg.cards.Spell;
+import main.mtcg.cards.*;
 
 import java.util.ArrayList;
 
@@ -51,9 +48,16 @@ public class Json {
         return new ObjectMapper().writeValueAsString(Pack.class);
     }
 
-    public static Deck parseDeck(String s) throws JsonProcessingException {
-        return new ObjectMapper().readValue(s, Deck.class);
+    public static CardCollection parseCardCollection(String s) throws JsonProcessingException {
+        ArrayList<Card> cardList = new ObjectMapper().readValue(s, new TypeReference<>(){});
+        return new CardCollection(cardList);
     }
+
+    public static String serializeCardCollection(CardCollection cardCollection) throws JsonProcessingException {
+        //TODO: need to create a json serialize object
+        return new ObjectMapper().writeValueAsString(CardCollection.class);
+    }
+
 
     public static Trade parseTrade(String s) throws JsonProcessingException {
         return new ObjectMapper().readValue(s, Trade.class);
