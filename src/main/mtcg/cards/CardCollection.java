@@ -24,11 +24,11 @@ public class CardCollection {
     }
 
     @JsonSetter
-    public void addCardToPack(Card card) {
+    public void addCardToCollection(Card card) {
         this.cardCollection.add(card);
     }
 
-    public Card getCardFromPack(String id) {
+    public Card getCardFromCollection(String id) {
         for (Card c: this.cardCollection) {
             if (c.getId().equals(id)) {
                 return c;

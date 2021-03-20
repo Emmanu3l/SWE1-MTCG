@@ -122,20 +122,31 @@ public class Postgres {
         connection.close();
     }
 
-    public void login(User user) throws SQLException {
+    public boolean login(User user) throws SQLException {
         //through the lens of CRUD, login corresponds to READ which in turn corresponds to SELECT
         //TODO: should fail if the password is incorrect
-        /*PreparedStatement preparedStatement = connection.prepareStatement("SELECT username, password FROM USERS WHERE username = ? and password = ?");
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet.getString(1).equals(user.getUsername()) && resultSet.getString(2).equals(user.getPassword());*/
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT username, password FROM USERS WHERE username = ? and password = ?");
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            boolean firstCondition = resultSet.getString(1).equals(user.getUsername());
+            resultSet.next();
+            boolean secondCondition = resultSet.getString(2).equals(user.getPassword());
+            return firstCondition && secondCondition;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void createCard(Card card) throws SQLException {
-        /*PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO CARDS (id, name, damage) values (?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO CARDS (id, name, damage) values (?, ?, ?)");
         preparedStatement.setString(1, card.getId());
         preparedStatement.setString(2, card.getName());
-        preparedStatement.setDouble(2, card.getDamage());
-        preparedStatement.execute();*/
+        preparedStatement.setDouble(3, card.getDamage());
+        preparedStatement.execute();
     }
 
     public void createPackage(Pack pack) throws SQLException {
@@ -261,11 +272,11 @@ public class Postgres {
         statement.executeUpdate("DELETE FROM TRADINGS WHERE id = '" + tradeID + "'");
     }
 
-    public void configureDeck(User user, String json) {
+    /*public void configureDeck(User user, String json) {
         //add to user deck
         CardCollection cardCollection = null;
         statement.executeUpdate("DELETE FROM TRADINGS WHERE id = '" + tradeID + "'");
-    }
+    }*/
 
 
     public void wipe() {

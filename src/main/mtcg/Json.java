@@ -48,6 +48,10 @@ public class Json {
         return new ObjectMapper().writeValueAsString(Pack.class);
     }
 
+    public static ArrayList<String> parseIDList(String s) throws JsonProcessingException {
+        return new ObjectMapper().readValue(s, new TypeReference<>(){});
+    }
+
     public static CardCollection parseCardCollection(String s) throws JsonProcessingException {
         ArrayList<Card> cardList = new ObjectMapper().readValue(s, new TypeReference<>(){});
         return new CardCollection(cardList);

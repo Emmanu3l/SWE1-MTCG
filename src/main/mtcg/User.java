@@ -3,6 +3,7 @@ package main.mtcg;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import main.mtcg.cards.Card;
 import main.mtcg.cards.CardCollection;
+import main.mtcg.cards.Pack;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -66,6 +67,16 @@ public class User {
 
     public void addToDeck(Card c) {
         this.deck.getCardCollection().add(c);
+    }
+
+    public void addFromStack(String id) {
+        this.deck.addCardToCollection(this.stack.getCardFromCollection(id));
+    }
+
+    public void addToStack(Pack pack) {
+        for (Card c: pack.getPack()) {
+            this.stack.getCardCollection().add(c);
+        }
     }
 
     public String getBio() {

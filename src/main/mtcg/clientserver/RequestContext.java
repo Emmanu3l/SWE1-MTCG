@@ -1,6 +1,8 @@
 package main.mtcg.clientserver;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.mtcg.*;
+import main.mtcg.cards.Card;
 import main.mtcg.cards.Pack;
 
 import java.io.BufferedReader;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestContext {
@@ -20,6 +23,10 @@ public class RequestContext {
     private ArrayList<String> headers;
     private String body;
     private String log;
+    private ArrayList<Pack> allPackages = new ArrayList<>();
+    private Dictionary<User,Pack> userPackDictionary = new Hashtable<>();
+    private Dictionary<String, User> userDictionary = new Hashtable<>();
+    private ArrayList<User> battlers = new ArrayList<>();
     //TODO: maybe just implement it without DB data? at least the complicated parts like deck/stack/battle
     //private ConcurrentHashMap
 
@@ -76,7 +83,8 @@ public class RequestContext {
             } else if (getURI().startsWith("/users" /* + /username */)) {
                 responseBuilder.append(ResponseCodes.OK.toString());
                 if (getUsernameFromToken().equals(getUsernameFromURI())) {
-                    User user = new Postgres().getUser(getUsernameFromToken());
+                    //User user = new Postgres().getUser(getUsernameFromToken());
+                    User user = this.userDictionary.get(getUsernameFromToken());
                     responseBuilder.append(Json.serializeUser(user));
                 }
                 //...
@@ -104,27 +112,44 @@ public class RequestContext {
             if (getURI().equals("/users")) {
                 User user = Json.parseUser(getBody());
                 new Postgres().register(user);
+                this.userDictionary.put(user.getUsername(), user);
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
                 //TODO: parse user, pass object to database
                 //TODO: this is what you have to do next
             } else if (getURI().equals("/sessions")) {
                 User user = Json.parseUser(getBody());
-                new Postgres().login(user);
-                responseBuilder.append(ResponseCodes.CREATED.toString());
+                if (new Postgres().login(user)) {
+                    responseBuilder.append(ResponseCodes.CREATED.toString());
+                } else {
+                    responseBuilder.append(ResponseCodes.NOT_FOUND.toString());
+                }
                 responseBuilder.append(messages.get(getBody()));
+
 
             } else if (getURI().equals("/packages")) {
                 //TODO: check header token for "admin" username
                 Pack pack = Json.parsePack(getBody());
-                new Postgres().createPackage(pack);
+                //new Postgres().createPackage(pack);
+                this.allPackages.add(pack);
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
             } else if (getURI().equals("/transactions/packages")) {
                 //TODO: acquire packages. parse user from header
                 //get users from database, iterate through them and check whether the username is contained within the header
                 new Postgres().acquirePackages(new Postgres().getUser(getUsernameFromToken()));
-                responseBuilder.append(ResponseCodes.CREATED.toString());
+                //User user = new Postgres().getUser(getUsernameFromToken());
+                if (this.allPackages != null && !this.allPackages.isEmpty()) {
+                    try {
+                        this.userDictionary.get(getUsernameFromToken()).addToStack(this.allPackages.get(1));
+                    } catch (Exception e) {
+
+                    }
+                    this.allPackages.remove(0);
+                    responseBuilder.append(ResponseCodes.CREATED.toString());
+                } else {
+                    responseBuilder.append(ResponseCodes.NOT_FOUND);
+                }
                 responseBuilder.append(messages.get(getBody()));
 
             } else if (getURI().equals("/tradings")) {
@@ -138,18 +163,28 @@ public class RequestContext {
                 //then add the second person to the database in the battle table
                 //then, if there is at least two people in there, get their usernames and have them battle each other
                 //then print out the winner, add it to their stats and remove them from the battle table
-                User user = new Postgres().getUser(getUsernameFromToken());
+                this.battlers.add(new Postgres().getUser(getUsernameFromToken()));
+                User user = this.userDictionary.get(getUsernameFromToken());
                 //TODO: implement these three methods!!!
                 //TODO: add battler before if statement
                 //TODO: remove battlers in if STATEMENT
 
                 //comment out if statement since it doesn't seem to work
-                if (/*new Postgres().getBattlerCount() > 1*/ true) {
-                    Battle battle = new Battle(new Postgres().popBattler(), new Postgres().popBattler());
-                    battle.returnWinner();
-                    passBattleLog(battle.getLog());
+                if (/*new Postgres().getBattlerCount() > 1*/ this.battlers.size() > 1) {
+                    //Battle battle = new Battle(new Postgres().popBattler(), new Postgres().popBattler());
+                    try {
+                        Battle battle = new Battle(this.battlers.get(0), this.battlers.get(1));
+                        battle.returnWinner();
+                        this.battlers.remove(0);
+                        this.battlers.remove(0);
+
+                    } catch (Exception e) {
+
+                    }
+                    //passBattleLog(battle.getLog());
                 } else {
                     new Postgres().addBattler(new Postgres().getUser(getUsernameFromToken()));
+                    this.battlers.add(new Postgres().getUser(getUsernameFromToken()));
                 }
                 responseBuilder.append(ResponseCodes.CREATED.toString());
                 responseBuilder.append(messages.get(getBody()));
@@ -179,7 +214,24 @@ public class RequestContext {
             if (getURI().equals("/deck")) {
                     responseBuilder.append(ResponseCodes.OK.toString());
                     //TODO: do something
-                    new Postgres().configureDeck(new Postgres().getUser(getUsernameFromToken()), getBody());
+                    //new Postgres().configureDeck(new Postgres().getUser(getUsernameFromToken()), getBody());
+                User user = this.userDictionary.get(getUsernameFromToken());
+                //TODO:
+                //ObjectMapper objectMapper = new ObjectMapper();
+                //objectMapper.
+                //objectMapper.writeValueAsString(getBody());
+                //user.addToDeck(Json.serializeCardCollection());
+                ArrayList<String> arrayList = Json.parseIDList(getBody());
+                for (String s : arrayList) {
+                    try {
+                        user.addFromStack(s);
+                    } catch (Exception e) {
+
+                    }
+
+                }
+
+
 
                     //...
 

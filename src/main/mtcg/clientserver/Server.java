@@ -53,11 +53,11 @@ public class Server implements Runnable {
             this.requestContext.parseRequest(in);
             this.requestContext.parseBody(in);
             String response = this.requestContext.handleRequest(messages);
-            String log = this.requestContext.retrieveBattleLog();
+            //String log = this.requestContext.retrieveBattleLog();
             System.out.println(response);
-            System.out.println("BATTLE LOG " + log);
+            //System.out.println("BATTLE LOG " + log);
             out.println(response);
-            out.println(log);
+            //out.println(log);
             out.flush();
             in.close();
             out.close();
